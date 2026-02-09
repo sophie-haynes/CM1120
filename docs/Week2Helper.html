@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ER Modelling Helper | CM1120 Database Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #682773;
+    --purple-light: #F7ECF8;
+    --purple-mid: #9B59B6;
+    --purple-dark: #4A1A52;
+    --orange: #E67E22;
+    --orange-light: #FEF5EC;
+    --blue: #2980B9;
+    --blue-light: #EBF5FB;
+    --green: #27AE60;
+    --green-light: #EAFAF1;
+    --red: #E74C3C;
+    --red-light: #FDEDEC;
+    --yellow: #F1C40F;
+    --yellow-light: #FEF9E7;
+    --text: #2C3E50;
+    --text-light: #5D6D7E;
+    --bg: #FAFBFC;
+    --card-bg: #FFFFFF;
+    --border: #E8E8E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: white;
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+  }
+  header .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #f0e0f4;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3em 1em;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  header p {
+    font-size: 1.05rem;
+    opacity: 0.88;
+    max-width: 640px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .intro-box {
+    background: var(--purple-light);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 8px 8px 0;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.97rem;
+  }
+  .intro-box strong { color: var(--purple); }
+
+  .toc {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--purple);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem 1.5rem;
+  }
+  .toc a {
+    color: var(--purple);
+    text-decoration: none;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0;
+  }
+  .toc a:hover { text-decoration: underline; }
+  .toc a .num {
+    background: var(--purple-light);
+    color: var(--purple);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .concept {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .concept-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--purple-light);
+    border-bottom: 1px solid #EDE0F0;
+  }
+  .concept-num {
+    width: 36px; height: 36px;
+    background: var(--purple);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .concept-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+  }
+  .concept-body {
+    padding: 1.5rem;
+  }
+  .concept-body p {
+    margin-bottom: 1rem;
+  }
+
+  .visual-panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    text-align: center;
+  }
+  .visual-panel svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .visual-caption {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.6rem;
+    font-style: italic;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 650px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .toc-grid { grid-template-columns: 1fr; }
+  }
+
+  .mini-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .mini-card h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--purple);
+  }
+  .mini-card p {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    margin: 0;
+  }
+  .highlight-blue { background: var(--blue-light); border-color: #BFD9EC; }
+  .highlight-blue h4 { color: var(--blue); }
+  .highlight-orange { background: var(--orange-light); border-color: #F5CBA7; }
+  .highlight-orange h4 { color: var(--orange); }
+  .highlight-green { background: var(--green-light); border-color: #A9DFBF; }
+  .highlight-green h4 { color: var(--green); }
+  .highlight-red { background: var(--red-light); border-color: #F5B7B1; }
+  .highlight-red h4 { color: var(--red); }
+
+  .example {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .example strong { color: #1E8449; }
+
+  .warning {
+    background: var(--orange-light);
+    border-left: 4px solid var(--orange);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .warning strong { color: #B7560F; }
+
+  .info {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .info strong { color: #1A5276; }
+
+  .danger {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .danger strong { color: #922B21; }
+
+  .key-term {
+    display: inline-block;
+    background: var(--purple-light);
+    color: var(--purple-dark);
+    font-weight: 600;
+    padding: 0.1em 0.45em;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  code {
+    font-family: 'Source Code Pro', monospace;
+    background: #F0EDF2;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--purple-dark);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  th {
+    background: var(--purple);
+    color: white;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--purple-light); }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Quiz styles */
+  .quiz-question {
+    background: var(--yellow-light);
+    border: 2px solid var(--yellow);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+  }
+  .quiz-question h4 {
+    color: #7D6608;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .quiz-option {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+  .quiz-option:hover {
+    border-color: var(--purple);
+    background: var(--purple-light);
+  }
+  .quiz-option.correct {
+    background: var(--green-light);
+    border-color: var(--green);
+  }
+  .quiz-option.incorrect {
+    background: var(--red-light);
+    border-color: var(--red);
+  }
+  .quiz-reveal {
+    display: none;
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.88rem;
+  }
+  .quiz-reveal.show {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">CM1120 · ER Modelling Summary</div>
+  <h1>Entity-Relationship Modelling Helper</h1>
+  <p>A quick reference guide covering the key concepts from ER modelling, with visual examples and practice exercises.</p>
+</header>
+
+<div class="container">
+
+  <div class="intro-box">
+    <strong>How to use this document:</strong> This is a reference guide to clarify the main ER modelling concepts. Use it to review before class, during labs, or when working on your coursework. The interactive quizzes at the end will help you check your understanding.
+  </div>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <div class="toc-grid">
+      <a href="#s1"><span class="num">1</span> Why ER Modelling?</a>
+      <a href="#s2"><span class="num">2</span> ER vs Database Concepts</a>
+      <a href="#s3"><span class="num">3</span> Cardinality Explained</a>
+      <a href="#s4"><span class="num">4</span> Participation Explained</a>
+      <a href="#s5"><span class="num">5</span> Constraints vs Assumptions</a>
+      <a href="#s6"><span class="num">6</span> Reading ER Diagrams</a>
+      <a href="#s7"><span class="num">7</span> Drawing ER Diagrams</a>
+      <a href="#s8"><span class="num">8</span> Practice Exercises</a>
+    </div>
+  </div>
+
+  <!-- SECTION 1: Why ER Modelling -->
+  <div class="concept" id="s1">
+    <div class="concept-header">
+      <div class="concept-num">1</div>
+      <h2>Why ER Modelling?</h2>
+    </div>
+    <div class="concept-body">
+      <p>Before jumping into creating database tables, we need a way to <strong>understand and communicate</strong> about the problem we're solving. ER modelling gives us that common language.</p>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-green">
+          <h4>With ER Modelling ✓</h4>
+          <p>Understand the problem first, then design the database.</p>
+        </div>
+        <div class="mini-card highlight-red">
+          <h4>Without ER Modelling ✗</h4>
+          <p>Try to do both at once, which usually leads to mistakes.</p>
+        </div>
+      </div>
+
+      <p>ER modelling separates two difficult tasks:</p>
+      <table>
+        <tr><th>Step</th><th>Focus</th><th>Language</th></tr>
+        <tr><td>1. Conceptual Model (ER)</td><td>Understanding the real-world problem</td><td>Books, Members, Borrowing</td></tr>
+        <tr><td>2. Logical/Physical Model</td><td>Designing the database structure</td><td>Tables, Foreign Keys, Constraints</td></tr>
+      </table>
+
+      <div class="info">
+        <strong>Key benefit:</strong> You can discuss the ER model with customers and colleagues who don't know database terminology. Try explaining "foreign key referential integrity" to a librarian!
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: ER vs Database Concepts -->
+  <div class="concept" id="s2">
+    <div class="concept-header">
+      <div class="concept-num">2</div>
+      <h2>ER Concepts vs Database Concepts</h2>
+    </div>
+    <div class="concept-body">
+      <p>ER modelling and database design use <strong>different terminology</strong> for similar ideas. It's important not to mix them up.</p>
+
+      <table>
+        <tr><th>ER Model (Conceptual)</th><th>Database (Logical/Physical)</th></tr>
+        <tr><td>Entity</td><td>Table</td></tr>
+        <tr><td>Attribute</td><td>Column</td></tr>
+        <tr><td>Identifier / Primary Key</td><td>Primary Key</td></tr>
+        <tr><td>Relationship (shown as a line)</td><td>Foreign Key</td></tr>
+        <tr><td>Entity instance</td><td>Row / Record</td></tr>
+      </table>
+
+      <div class="danger">
+        <strong>Critical:</strong> Do NOT include foreign keys in your ER entity descriptions. In ER modelling, relationships are shown as lines connecting entities. Adding a foreign key would be redundant and mixes up the two stages.
+      </div>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-green">
+          <h4>Correct ER Entity ✓</h4>
+          <p><code>Student(studentID, name, address)</code></p>
+        </div>
+        <div class="mini-card highlight-red">
+          <h4>Incorrect ER Entity ✗</h4>
+          <p><code>Student(studentID, name, address, supervisorID*)</code></p>
+        </div>
+      </div>
+
+      <div class="warning">
+        <strong>Why no foreign keys?</strong> The ER model should be independent of the database type. You might end up using a relational database, an object database, or something else entirely. Foreign keys are a relational database concept.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Cardinality -->
+  <div class="concept" id="s3">
+    <div class="concept-header">
+      <div class="concept-num">3</div>
+      <h2>Cardinality Explained</h2>
+    </div>
+    <div class="concept-body">
+      <p><span class="key-term">Cardinality</span> answers the question: <strong>"How many could there be?"</strong> It's about the <strong>maximum</strong> number of entities on each side of a relationship.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="40" width="140" height="50" rx="6" fill="#682773"/>
+          <text x="120" y="72" text-anchor="middle" fill="white" font-weight="600" font-size="16" font-family="Source Sans 3">Supervisor</text>
+          <rect x="510" y="40" width="140" height="50" rx="6" fill="#682773"/>
+          <text x="580" y="72" text-anchor="middle" fill="white" font-weight="600" font-size="16" font-family="Source Sans 3">Student</text>
+          <!-- Main relationship line -->
+          <line x1="190" y1="65" x2="480" y2="65" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Crow's foot at Student end (many) - fanning out from Student -->
+          <line x1="480" y1="65" x2="510" y2="50" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="480" y1="65" x2="510" y2="65" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="480" y1="65" x2="510" y2="80" stroke="#2C3E50" stroke-width="2"/>
+          <text x="350" y="50" text-anchor="middle" fill="#5D6D7E" font-size="14" font-family="Source Sans 3">supervises</text>
+          <text x="350" y="100" text-anchor="middle" fill="#682773" font-weight="600" font-size="14" font-family="Source Sans 3">One supervisor → Many students</text>
+        </svg>
+        <div class="visual-caption">A one-to-many (1:M) relationship. Single line means "one", crow's foot means "many".</div>
+      </div>
+
+      <p>To determine cardinality, ask two questions:</p>
+      <table>
+        <tr><th>Question</th><th>Answer</th><th>Cardinality</th></tr>
+        <tr><td>Can one supervisor have more than one student?</td><td>Yes</td><td>Many (M)</td></tr>
+        <tr><td>Can one student have more than one supervisor?</td><td>No</td><td>One (1)</td></tr>
+      </table>
+
+      <p>This gives us <strong>1:M</strong> (one-to-many), meaning one supervisor to many students.</p>
+
+      <div class="info">
+        <strong>The four cardinality types:</strong>
+      </div>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-blue">
+          <h4>1:1 (One-to-One)</h4>
+          <p>One person has one passport. One passport belongs to one person.</p>
+        </div>
+        <div class="mini-card highlight-orange">
+          <h4>1:M (One-to-Many)</h4>
+          <p>One department has many employees. Each employee works in one department.</p>
+        </div>
+        <div class="mini-card highlight-green">
+          <h4>M:1 (Many-to-One)</h4>
+          <p>Same as 1:M, just viewed from the other direction.</p>
+        </div>
+        <div class="mini-card highlight-red">
+          <h4>M:N (Many-to-Many)</h4>
+          <p>One student takes many modules. One module has many students.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Participation -->
+  <div class="concept" id="s4">
+    <div class="concept-header">
+      <div class="concept-num">4</div>
+      <h2>Participation (Membership Class) Explained</h2>
+    </div>
+    <div class="concept-body">
+      <p><span class="key-term">Participation</span> answers the question: <strong>"Must there be at least one?"</strong> It's about the <strong>minimum</strong> number of entities on each side.</p>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-green">
+          <h4>Mandatory ●</h4>
+          <p>Minimum = 1<br/>Must participate in the relationship<br/><em>(filled circle)</em></p>
+        </div>
+        <div class="mini-card highlight-orange">
+          <h4>Optional ○</h4>
+          <p>Minimum = 0<br/>May or may not participate<br/><em>(empty circle)</em></p>
+        </div>
+      </div>
+
+      <p>To determine participation, ask two questions:</p>
+      <table>
+        <tr><th>Question</th><th>Answer</th><th>Participation</th></tr>
+        <tr><td>Must every student have at least one supervisor?</td><td>Yes</td><td>Mandatory (m)</td></tr>
+        <tr><td>Must every supervisor have at least one student?</td><td>No</td><td>Optional (o)</td></tr>
+      </table>
+
+      <p>This gives us <strong>o:m</strong> (optional to mandatory). Supervisor participation is optional, student participation is mandatory.</p>
+
+      <div class="warning">
+        <strong>Common confusion:</strong> Cardinality and participation are independent! You need to determine both, from both directions. That's four questions total for every relationship.
+      </div>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+          <text x="350" y="25" text-anchor="middle" fill="#682773" font-weight="700" font-size="16" font-family="Source Sans 3">The Four Questions</text>
+          
+          <rect x="50" y="80" width="120" height="40" rx="6" fill="#682773"/>
+          <text x="110" y="106" text-anchor="middle" fill="white" font-weight="600" font-size="14" font-family="Source Sans 3">Entity A</text>
+          
+          <rect x="530" y="80" width="120" height="40" rx="6" fill="#682773"/>
+          <text x="590" y="106" text-anchor="middle" fill="white" font-weight="600" font-size="14" font-family="Source Sans 3">Entity B</text>
+          
+          <line x1="170" y1="100" x2="530" y2="100" stroke="#2C3E50" stroke-width="2"/>
+          
+          <!-- Cardinality questions (top) -->
+          <text x="350" y="55" text-anchor="middle" fill="#E67E22" font-weight="600" font-size="12" font-family="Source Sans 3">CARDINALITY (maximum)</text>
+          <text x="250" y="75" text-anchor="middle" fill="#E67E22" font-size="12" font-family="Source Sans 3">Max B's per A?</text>
+          <text x="450" y="75" text-anchor="middle" fill="#E67E22" font-size="12" font-family="Source Sans 3">Max A's per B?</text>
+          
+          <!-- Participation questions (bottom) -->
+          <text x="250" y="140" text-anchor="middle" fill="#27AE60" font-size="12" font-family="Source Sans 3">Must A have a B?</text>
+          <text x="450" y="140" text-anchor="middle" fill="#27AE60" font-size="12" font-family="Source Sans 3">Must B have an A?</text>
+          <text x="350" y="170" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="12" font-family="Source Sans 3">PARTICIPATION (minimum)</text>
+        </svg>
+        <div class="visual-caption">Always ask all four questions for every relationship</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Constraints vs Assumptions -->
+  <div class="concept" id="s5">
+    <div class="concept-header">
+      <div class="concept-num">5</div>
+      <h2>Constraints vs Assumptions</h2>
+    </div>
+    <div class="concept-body">
+      <p>Both are part of your ER model documentation, but they serve different purposes:</p>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-blue">
+          <h4>Constraints</h4>
+          <p>Rules about <strong>data values</strong>, i.e. what's valid to enter. Can be enforced by the database.</p>
+        </div>
+        <div class="mini-card highlight-orange">
+          <h4>Assumptions</h4>
+          <p>Design decisions about <strong>relationships and structure</strong>, i.e. how entities connect.</p>
+        </div>
+      </div>
+
+      <table>
+        <tr><th>Constraints (Data Rules)</th><th>Assumptions (Design Decisions)</th></tr>
+        <tr><td>Date of birth cannot be in the future</td><td>A student can only enrol on one course at a time</td></tr>
+        <tr><td>Points on licence must be 0–11</td><td>Each order must belong to exactly one customer</td></tr>
+        <tr><td>Email must contain @ symbol</td><td>A book must have at least one author</td></tr>
+        <tr><td>Title must be Mr, Mrs, Ms, Mx, or Dr</td><td>Song titles are unique within an album</td></tr>
+        <tr><td>Price must be greater than zero</td><td>A playlist can contain songs from multiple artists</td></tr>
+      </table>
+
+      <div class="example">
+        <strong>Think of it this way:</strong> Constraints are things a database can check and reject invalid data for. Assumptions are decisions you made (often because the specification was unclear) that explain why your diagram looks the way it does.
+      </div>
+
+      <div class="info">
+        <strong>Participation is a type of assumption:</strong> When you decide that "a student must have a supervisor" (mandatory participation), that's an assumption about how the system works. You document it both in your diagram notation AND in your written assumptions.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Reading ER Diagrams -->
+  <div class="concept" id="s6">
+    <div class="concept-header">
+      <div class="concept-num">6</div>
+      <h2>Reading ER Diagrams (Bachman Notation)</h2>
+    </div>
+    <div class="concept-body">
+      <p>In <span class="key-term">Bachman notation</span>, the symbols at each end of a relationship line tell you the cardinality and participation:</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+          <text x="350" y="25" text-anchor="middle" fill="#682773" font-weight="700" font-size="16" font-family="Source Sans 3">Bachman Notation Symbols</text>
+          
+          <!-- Single line = One -->
+          <line x1="50" y1="70" x2="150" y2="70" stroke="#2C3E50" stroke-width="2"/>
+          <text x="200" y="75" fill="#2C3E50" font-size="14" font-family="Source Sans 3">Single line = <tspan font-weight="700">One</tspan> (max 1)</text>
+          
+          <!-- Crow's foot = Many (fanning out from right) -->
+          <line x1="50" y1="120" x2="130" y2="120" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="130" y1="120" x2="150" y2="105" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="130" y1="120" x2="150" y2="120" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="130" y1="120" x2="150" y2="135" stroke="#2C3E50" stroke-width="2"/>
+          <text x="200" y="125" fill="#2C3E50" font-size="14" font-family="Source Sans 3">Crow's foot = <tspan font-weight="700">Many</tspan> (no max limit)</text>
+          
+          <!-- Filled circle = Mandatory -->
+          <line x1="50" y1="170" x2="150" y2="170" stroke="#2C3E50" stroke-width="2"/>
+          <circle cx="140" cy="170" r="6" fill="#2C3E50" stroke="#2C3E50" stroke-width="2"/>
+          <text x="200" y="175" fill="#2C3E50" font-size="14" font-family="Source Sans 3">Filled circle near entity = <tspan font-weight="700">Mandatory</tspan> (min 1)</text>
+          
+          <!-- Circle = Optional -->
+          <line x1="50" y1="220" x2="150" y2="220" stroke="#2C3E50" stroke-width="2"/>
+          <circle cx="140" cy="220" r="8" fill="none" stroke="#2C3E50" stroke-width="2"/>
+          <text x="200" y="225" fill="#2C3E50" font-size="14" font-family="Source Sans 3">Circle near entity = <tspan font-weight="700">Optional</tspan> (min 0)</text>
+          
+          <text x="350" y="265" text-anchor="middle" fill="#5D6D7E" font-size="12" font-family="Source Sans 3">Symbols are placed at the END of the line, next to the related entity</text>
+        </svg>
+      </div>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg">
+          <text x="350" y="25" text-anchor="middle" fill="#682773" font-weight="700" font-size="16" font-family="Source Sans 3">Example: Supervisor supervises Student [1:M] [o:m]</text>
+          
+          <rect x="80" y="60" width="120" height="45" rx="6" fill="#682773"/>
+          <text x="140" y="88" text-anchor="middle" fill="white" font-weight="600" font-size="14" font-family="Source Sans 3">Supervisor</text>
+          
+          <rect x="500" y="60" width="120" height="45" rx="6" fill="#682773"/>
+          <text x="560" y="88" text-anchor="middle" fill="white" font-weight="600" font-size="14" font-family="Source Sans 3">Student</text>
+          
+          <!-- Relationship line -->
+          <line x1="200" y1="82" x2="480" y2="82" stroke="#2C3E50" stroke-width="2"/>
+          
+          <!-- Optional circle near Supervisor (fanning towards Supervisor) -->
+          <circle cx="215" cy="82" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+          
+          <!-- Mandatory filled circle near Student -->
+          <circle cx="485" cy="82" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="2"/>
+          
+          <!-- Crow's foot fanning out from Student -->
+          <line x1="490" y1="82" x2="500" y2="68" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="490" y1="82" x2="500" y2="82" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="490" y1="82" x2="500" y2="96" stroke="#2C3E50" stroke-width="2"/>
+          
+          <text x="350" y="68" text-anchor="middle" fill="#5D6D7E" font-size="12" font-family="Source Sans 3">supervises →</text>
+          
+          <text x="230" y="120" text-anchor="middle" fill="#27AE60" font-size="11" font-family="Source Sans 3">Optional: supervisor</text>
+          <text x="230" y="132" text-anchor="middle" fill="#27AE60" font-size="11" font-family="Source Sans 3">may have no students</text>
+          
+          <text x="470" y="120" text-anchor="middle" fill="#E67E22" font-size="11" font-family="Source Sans 3">Mandatory + Many:</text>
+          <text x="470" y="132" text-anchor="middle" fill="#E67E22" font-size="11" font-family="Source Sans 3">student must have 1 supervisor</text>
+        </svg>
+      </div>
+
+      <div class="warning">
+        <strong>Reading tip:</strong> The symbols describe what's on the OTHER side. The crow's foot near Student means "a supervisor can have MANY students." The bar near Student means "a student MUST have a supervisor."
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Drawing ER Diagrams -->
+  <div class="concept" id="s7">
+    <div class="concept-header">
+      <div class="concept-num">7</div>
+      <h2>Drawing Valid ER Diagrams</h2>
+    </div>
+    <div class="concept-body">
+      <p>A complete ER model has four components. Make sure you include all of them:</p>
+
+      <table>
+        <tr><th>#</th><th>Component</th><th>What to include</th></tr>
+        <tr><td>1</td><td>ER Diagram</td><td>Entities as rectangles, relationships as labelled lines with cardinality/participation symbols</td></tr>
+        <tr><td>2</td><td>Entity Descriptions</td><td>EntityName(identifier, attribute1, attribute2, ...). NO foreign keys!</td></tr>
+        <tr><td>3</td><td>Relationship Descriptions</td><td>relationship_name: Entity1 verb Entity2 [cardinality] [participation]</td></tr>
+        <tr><td>4</td><td>Constraints & Assumptions</td><td>Data validation rules + design decisions</td></tr>
+      </table>
+
+      <div class="example">
+        <strong>Example: Library System</strong><br/><br/>
+        <strong>Entities:</strong><br/>
+        Book(isbn, title, author, publication_date)<br/>
+        Member(memberID, name, address, phone)<br/><br/>
+        <strong>Relationships:</strong><br/>
+        borrows(return_date): Member borrows Book [M:N] [o:o]<br/><br/>
+        <strong>Constraints:</strong><br/>
+        • Title must be one of: Mr, Mrs, Ms, Mx, Dr<br/>
+        • Member can borrow up to 6 books at once<br/><br/>
+        <strong>Assumptions:</strong><br/>
+        • A book can exist in the system before being borrowed<br/>
+        • A member can exist without currently borrowing any books
+      </div>
+
+      <div class="danger">
+        <strong>Common mistakes to avoid:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1.2rem;">
+          <li>Including foreign keys in entity descriptions</li>
+          <li>Missing participation symbols (optional/mandatory)</li>
+          <li>Forgetting to document assumptions</li>
+          <li>Using database terminology instead of ER terminology</li>
+          <li>Not labelling relationship lines with a verb</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: Practice Exercises -->
+  <div class="concept" id="s8">
+    <div class="concept-header">
+      <div class="concept-num">8</div>
+      <h2>Practice Exercises</h2>
+    </div>
+    <div class="concept-body">
+      <p>Test your understanding with these exercises. Click on an answer to check if you're correct.</p>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 1: Identify the Cardinality</h3>
+      
+      <div class="quiz-question">
+        <h4>A hospital system: Doctors treat patients. One doctor can treat many patients. One patient can be seen by many doctors.</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">1:1 (one-to-one)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">1:M (one-to-many)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">M:N (many-to-many)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">M:1 (many-to-one)</div>
+        </div>
+        <div class="quiz-reveal">Both doctors and patients can have multiple of the other, so it's many-to-many.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>An HR system: Each employee works in exactly one department. A department has many employees.</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">1:1 (one-to-one)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">1:M (one-to-many) or M:1</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">M:N (many-to-many)</div>
+        </div>
+        <div class="quiz-reveal">One department to many employees. From the employee's view: many employees to one department (M:1).</div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 2: Identify the Participation</h3>
+
+      <div class="quiz-question">
+        <h4>Every student MUST have a supervisor. A supervisor MAY have no students (e.g., they're new or on sabbatical).</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">mandatory : mandatory (m:m)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">optional : mandatory (o:m)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">mandatory : optional (m:o)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">optional : optional (o:o)</div>
+        </div>
+        <div class="quiz-reveal">Supervisor participation is optional (may have zero students). Student participation is mandatory (must have a supervisor).</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>A booking system: A flight can exist with no passengers (newly scheduled). A passenger account can exist with no bookings.</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">mandatory : mandatory (m:m)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">optional : mandatory (o:m)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">mandatory : optional (m:o)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">optional : optional (o:o)</div>
+        </div>
+        <div class="quiz-reveal">Both sides can exist without participating in the relationship, so both are optional.</div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 3: Constraint or Assumption?</h3>
+
+      <div class="quiz-question">
+        <h4>"A customer's email address must contain an @ symbol."</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Constraint</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Assumption</div>
+        </div>
+        <div class="quiz-reveal">This is a constraint. It's a validation rule about data format that can be enforced by the database.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>"A playlist can contain songs from multiple different artists."</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Constraint</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Assumption</div>
+        </div>
+        <div class="quiz-reveal">This is an assumption. It's a design decision about how entities relate to each other.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>"Product price must be greater than zero."</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Constraint</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Assumption</div>
+        </div>
+        <div class="quiz-reveal">This is a constraint. It's a validation rule about acceptable data values.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>"Each order must belong to exactly one customer."</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Constraint</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Assumption</div>
+        </div>
+        <div class="quiz-reveal">This is an assumption. It's a design decision about the relationship between orders and customers (cardinality and participation).</div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 4: From Description to ER</h3>
+
+      <div class="info">
+        <strong>Try this yourself:</strong> Read the description below and identify the entities, relationships, cardinality, and participation.<br/><br/>
+        "A university library system tracks books and members. Members can borrow books. Each book can only be borrowed by one member at a time, but members can borrow multiple books. A book might not currently be borrowed by anyone. All members must be registered, but they don't have to have any books currently borrowed."
+      </div>
+
+      <div class="example" style="margin-top: 1rem;">
+        <strong>Answer:</strong><br/><br/>
+        <strong>Entities:</strong> Book, Member<br/>
+        <strong>Relationship:</strong> borrows<br/>
+        <strong>Cardinality:</strong> 1:M (one member can borrow many books, each book borrowed by one member)<br/>
+        <strong>Participation:</strong> o:o (books may not be borrowed, members may not have books)<br/>
+        <strong>Formal:</strong> borrows: Member borrows Book [1:M] [o:o]
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="concept">
+    <div class="concept-header">
+      <div class="concept-num" style="background:var(--yellow);color:#7D6608;">✓</div>
+      <h2>Quick Reference Summary</h2>
+    </div>
+    <div class="concept-body">
+      <table>
+        <tr><th>Concept</th><th>Question it answers</th><th>Possible values</th></tr>
+        <tr><td>Cardinality</td><td>How many could there be? (maximum)</td><td>1 or M (one or many)</td></tr>
+        <tr><td>Participation</td><td>Must there be at least one? (minimum)</td><td>o or m (optional or mandatory)</td></tr>
+        <tr><td>Constraints</td><td>What data values are valid?</td><td>Validation rules</td></tr>
+        <tr><td>Assumptions</td><td>How do entities relate?</td><td>Design decisions</td></tr>
+      </table>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg">
+          <text x="350" y="25" text-anchor="middle" fill="#682773" font-weight="700" font-size="14" font-family="Source Sans 3">Formal Relationship Format</text>
+          <rect x="100" y="40" width="500" height="40" rx="6" fill="#F7ECF8" stroke="#682773" stroke-width="1"/>
+          <text x="350" y="66" text-anchor="middle" fill="#4A1A52" font-family="Source Code Pro" font-size="14">relationship_name: Entity1 verb Entity2 [1:M] [o:m]</text>
+        </svg>
+      </div>
+
+      <p style="margin-top:1.2rem; text-align:center; color:var(--text-light); font-size:0.93rem;">
+        Keep this page open during labs and while working on your coursework!
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  CM1120 Database Systems · Robert Gordon University
+</footer>
+
+<script>
+function checkAnswer(element, isCorrect) {
+  // Reset siblings
+  const options = element.parentElement.querySelectorAll('.quiz-option');
+  options.forEach(opt => {
+    opt.classList.remove('correct', 'incorrect');
+  });
+  
+  // Mark this answer
+  if (isCorrect) {
+    element.classList.add('correct');
+  } else {
+    element.classList.add('incorrect');
+    // Also highlight the correct one
+    options.forEach(opt => {
+      if (opt.getAttribute('onclick').includes('true')) {
+        opt.classList.add('correct');
+      }
+    });
+  }
+  
+  // Show explanation
+  const reveal = element.parentElement.nextElementSibling;
+  reveal.classList.add('show');
+}
+</script>
+
+</body>
+</html>
