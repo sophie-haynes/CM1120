@@ -786,7 +786,7 @@
       <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 2: Identify the Participation</h3>
 
       <div class="quiz-question">
-        <h4>Every student MUST have a supervisor. A supervisor MAY have no students (e.g., they're new or on sabbatical).</h4>
+        <h4>Every student MUST have a supervisor. A supervisor MAY have no students (e.g. they're new or on sabbatical). The supervisor to student relationship is: </h4>
         <div class="quiz-options">
           <div class="quiz-option" onclick="checkAnswer(this, false)">mandatory : mandatory (m:m)</div>
           <div class="quiz-option" onclick="checkAnswer(this, true)">optional : mandatory (o:m)</div>
@@ -852,14 +852,16 @@
         "A university library system tracks books and members. Members can borrow books. Each book can only be borrowed by one member at a time, but members can borrow multiple books. A book might not currently be borrowed by anyone. All members must be registered, but they don't have to have any books currently borrowed."
       </div>
 
-      <div class="example" style="margin-top: 1rem;">
-        <strong>Answer:</strong><br/><br/>
-        <strong>Entities:</strong> Book, Member<br/>
-        <strong>Relationship:</strong> borrows<br/>
-        <strong>Cardinality:</strong> 1:M (one member can borrow many books, each book borrowed by one member)<br/>
-        <strong>Participation:</strong> o:o (books may not be borrowed, members may not have books)<br/>
-        <strong>Formal:</strong> borrows: Member borrows Book [1:M] [o:o]
-      </div>
+      <details style="margin-top: 1rem;">
+        <summary style="cursor: pointer; padding: 0.8rem 1rem; background: var(--green-light); border-left: 4px solid var(--green); border-radius: 0 8px 8px 0; font-weight: 600; color: #1E8449;">Click to reveal answer</summary>
+        <div style="padding: 1rem 1.2rem; background: var(--green-light); border-left: 4px solid var(--green); border-radius: 0 0 8px 0; margin-top: -1px;">
+          <strong>Entities:</strong> Book, Member<br/>
+          <strong>Relationship:</strong> borrows<br/>
+          <strong>Cardinality:</strong> 1:M (one member can borrow many books, each book borrowed by one member)<br/>
+          <strong>Participation:</strong> o:o (books may not be borrowed, members may not have books)<br/>
+          <strong>Formal:</strong> borrows: Member borrows Book [1:M] [o:o]
+        </div>
+      </details>
 
     </div>
   </div>
