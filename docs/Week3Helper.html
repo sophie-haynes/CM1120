@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logical Design Helper, CM1120 Database Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #682773;
+    --purple-light: #F7ECF8;
+    --purple-mid: #9B59B6;
+    --purple-dark: #4A1A52;
+    --orange: #E67E22;
+    --orange-light: #FEF5EC;
+    --blue: #2980B9;
+    --blue-light: #EBF5FB;
+    --green: #27AE60;
+    --green-light: #EAFAF1;
+    --red: #E74C3C;
+    --red-light: #FDEDEC;
+    --yellow: #F1C40F;
+    --yellow-light: #FEF9E7;
+    --text: #2C3E50;
+    --text-light: #5D6D7E;
+    --bg: #FAFBFC;
+    --card-bg: #FFFFFF;
+    --border: #E8E8E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: white;
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+  }
+  header .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #f0e0f4;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3em 1em;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  header p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+  }
+
+  .intro-box {
+    background: var(--purple-light);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 8px 8px 0;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .concept-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .concept-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 2px solid #EDE0F0;
+  }
+  .concept-num {
+    width: 36px; height: 36px;
+    background: var(--purple);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .concept-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+  }
+  .concept-body {
+    padding: 1.5rem;
+  }
+  .concept-body p {
+    margin-bottom: 1rem;
+  }
+
+  .visual-panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+  .visual-panel svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .visual-caption {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.6rem;
+    font-style: italic;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 700px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .mini-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .mini-card h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--purple);
+  }
+  .mini-card p {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    margin: 0;
+  }
+  .highlight-blue { background: var(--blue-light); border-color: #BFD9EC; }
+  .highlight-blue h4 { color: var(--blue); }
+  .highlight-orange { background: var(--orange-light); border-color: #F5CBA7; }
+  .highlight-orange h4 { color: var(--orange); }
+  .highlight-green { background: var(--green-light); border-color: #A9DFBF; }
+  .highlight-green h4 { color: var(--green); }
+  .highlight-red { background: var(--red-light); border-color: #F5B7B1; }
+  .highlight-red h4 { color: var(--red); }
+
+  .warning {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .warning strong { color: var(--red); }
+
+  .info {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .info strong { color: var(--blue); }
+
+  .tip {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .tip strong { color: var(--green); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  th {
+    background: var(--purple);
+    color: white;
+    padding: 0.6rem 1rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--purple-light); }
+
+  code {
+    font-family: 'Source Code Pro', monospace;
+    background: #F0E6F3;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.88em;
+    color: var(--purple-dark);
+  }
+
+  .schema-box {
+    background: #1E1E2E;
+    color: #CDD6F4;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.88rem;
+    padding: 1.2rem 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .schema-box .kw { color: #CBA6F7; }
+  .schema-box .pk { color: #F9E2AF; text-decoration: underline; }
+  .schema-box .fk { color: #89B4FA; font-style: italic; }
+  .schema-box .comment { color: #6C7086; }
+
+  .table-example {
+    border: 2px solid var(--purple);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+  }
+  .table-example .te-header {
+    background: var(--purple);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .table-example table {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+  .table-example th {
+    background: var(--purple-light);
+    color: var(--purple-dark);
+    font-size: 0.82rem;
+  }
+  .table-example td {
+    padding: 0.4rem 0.8rem;
+  }
+  .null-cell {
+    color: var(--red);
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .quiz-question {
+    background: var(--yellow-light);
+    border: 2px solid var(--yellow);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+  }
+  .quiz-question h4 {
+    color: #7D6608;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .quiz-option {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+  .quiz-option:hover {
+    border-color: var(--purple);
+    background: var(--purple-light);
+  }
+  .quiz-option.correct {
+    background: var(--green-light);
+    border-color: var(--green);
+  }
+  .quiz-option.incorrect {
+    background: var(--red-light);
+    border-color: var(--red);
+  }
+  .quiz-reveal {
+    display: none;
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.88rem;
+  }
+  .quiz-reveal.show {
+    display: block;
+  }
+
+  .case-label {
+    display: inline-block;
+    background: var(--purple);
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.25em 0.8em;
+    border-radius: 4px;
+    margin-bottom: 0.8rem;
+  }
+
+  .arrow-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 1.2rem 0;
+    flex-wrap: wrap;
+  }
+  .flow-box {
+    background: var(--purple-light);
+    border: 2px solid var(--purple);
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--purple-dark);
+    text-align: center;
+  }
+  .flow-arrow {
+    font-size: 1.4rem;
+    color: var(--purple);
+    font-weight: 700;
+  }
+
+  details {
+    margin: 1rem 0;
+  }
+  details summary {
+    cursor: pointer;
+    padding: 0.8rem 1rem;
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    font-weight: 600;
+    color: #1E8449;
+    font-size: 0.93rem;
+  }
+  details summary:hover {
+    background: #D5F5E3;
+  }
+  details .reveal-content {
+    padding: 1rem 1.2rem;
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    border-radius: 0 0 8px 0;
+    margin-top: -1px;
+    font-size: 0.93rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">CM1120 · Logical Design</div>
+  <h1>Logical Design Helper</h1>
+  <p>Transforming an ER Model into a Relational Model. A step-by-step reference guide with examples and practice exercises.</p>
+</header>
+
+<div class="container">
+
+  <div class="intro-box">
+    <strong>How to use this document:</strong> This guide walks through how to turn your ER diagram into tables (relations) with primary keys and foreign keys. Use it alongside the lecture slides and during labs. The interactive quizzes at the end will help you check your understanding.
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 1: THE BIG PICTURE -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">1</div>
+      <h2>Where Does Logical Design Fit?</h2>
+    </div>
+    <div class="concept-body">
+      <p>Database design has three phases. Last week we built a <strong>conceptual model</strong> (ER diagram). This week we transform it into a <strong>logical model</strong>, which means expressing the same information using tables, columns, primary keys, and foreign keys.</p>
+
+      <div class="arrow-flow">
+        <div class="flow-box">Conceptual Model<br><span style="font-weight:400; font-size:0.82rem;">Entities, attributes, relationships</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color: var(--orange); background: var(--orange-light); color: #784212;">Logical Model<br><span style="font-weight:400; font-size:0.82rem;">Tables, columns, PK, FK</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color: var(--blue); background: var(--blue-light); color: #1A5276;">Physical Model<br><span style="font-weight:400; font-size:0.82rem;">Data types, SQL, indexes</span></div>
+      </div>
+
+      <div class="info">
+        <strong>Key idea:</strong> The logical model still describes <em>what</em> data we store and how it connects, but now using structures that a relational database can implement. We're not writing SQL yet (that's physical design), but we are deciding which tables exist and where the foreign keys go.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 2: BASIC TRANSFORMATION RULES -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">2</div>
+      <h2>The Basic Rules</h2>
+    </div>
+    <div class="concept-body">
+      <p>The transformation from ER to relational model follows a set of rules. Here's the starting point:</p>
+
+      <table>
+        <tr><th>ER Concept</th><th>Becomes…</th></tr>
+        <tr><td>Entity</td><td>A table (relation)</td></tr>
+        <tr><td>Attribute</td><td>A column in the table</td></tr>
+        <tr><td>Primary key (identifier)</td><td>Primary key of the table</td></tr>
+        <tr><td>Relationship</td><td>A foreign key in an existing table, <strong>or</strong> a new linking table</td></tr>
+      </table>
+
+      <p>Entities are straightforward: each one becomes a table with the same attributes and primary key. The tricky part is <strong>relationships</strong>, because we have three choices for how to represent them:</p>
+
+      <div class="grid-3">
+        <div class="mini-card highlight-blue">
+          <h4>Option A</h4>
+          <p>Put FK in Entity 1's table</p>
+        </div>
+        <div class="mini-card highlight-orange">
+          <h4>Option B</h4>
+          <p>Put FK in Entity 2's table</p>
+        </div>
+        <div class="mini-card highlight-green">
+          <h4>Option C</h4>
+          <p>Create a new linking table</p>
+        </div>
+      </div>
+
+      <p>Which option we choose depends on the <strong>cardinality</strong> (1:1, 1:M, M:N) and the <strong>participation</strong> (mandatory or optional) of the relationship. The rest of this guide walks through each combination.</p>
+
+      <div class="warning">
+        <strong>Three golden rules to remember:</strong><br>
+        1. Foreign keys should preferably <strong>not be NULL</strong><br>
+        2. Foreign keys should <strong>not have multiple values</strong> in a single cell<br>
+        3. Many-to-many relationships <strong>always</strong> need a new linking table
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 3: PARENT AND CHILD -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">3</div>
+      <h2>Parent and Child Entities</h2>
+    </div>
+    <div class="concept-body">
+      <p>When we place a foreign key, we need to identify which entity is the <strong>parent</strong> and which is the <strong>child</strong>:</p>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-blue">
+          <h4>Parent Entity</h4>
+          <p>The entity whose primary key gets <em>copied</em> into the other table as a foreign key.</p>
+        </div>
+        <div class="mini-card highlight-orange">
+          <h4>Child Entity</h4>
+          <p>The entity that <em>receives</em> the foreign key. It depends on the parent.</p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <strong>Think of it like real life:</strong> A parent can exist without children. A child must have a parent. The child's table is the one that gets the FK, because it "points back" to its parent.
+      </div>
+
+      <p>How do we decide which is which? That depends on the relationship type…</p>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 4: ONE-TO-MANY -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">4</div>
+      <h2>One-to-Many (1:M) Relationships</h2>
+    </div>
+    <div class="concept-body">
+      <p>This is the most common relationship type and the most straightforward to transform.</p>
+
+      <div class="info">
+        <strong>Rule:</strong> The entity on the "one" side is the <strong>parent</strong>. The entity on the "many" side is the <strong>child</strong>. Post a copy of the parent's PK into the child's table as a FK.
+      </div>
+
+      <p><strong>Example:</strong> A Team contains many Juniors. Each Junior belongs to one Team.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 680 70" xmlns="http://www.w3.org/2000/svg">
+          <rect x="40" y="15" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+          <text x="120" y="40" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Team</text>
+          <rect x="480" y="15" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="560" y="40" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Junior</text>
+          <line x1="200" y1="35" x2="480" y2="35" stroke="#682773" stroke-width="2"/>
+          <text x="340" y="28" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">contains</text>
+          <text x="220" y="58" fill="#2980B9" font-size="12" font-weight="600" font-family="Source Sans 3">1 (parent)</text>
+          <text x="440" y="58" fill="#E67E22" font-size="12" font-weight="600" font-family="Source Sans 3">M (child)</text>
+        </svg>
+      </div>
+
+      <div class="schema-box">
+        <span class="comment">-- Parent table (the "one" side)</span><br>
+        Team(<span class="pk">tcode</span>, noOfDocs)<br><br>
+        <span class="comment">-- Child table (the "many" side), receives the FK</span><br>
+        Junior(<span class="pk">staffid</span>, designation, <span class="fk">team*</span>)<br>
+        <span class="comment">&nbsp;&nbsp;Foreign Key team references Team(tcode)</span>
+      </div>
+
+      <p><strong>Why not the other way around?</strong> If we put the FK in Team, a single Team row would need to store <em>multiple</em> Junior staffids, which violates our rule against multi-valued foreign keys.</p>
+
+      <div class="warning">
+        <strong>1:M with optional participation on the "many" side:</strong> If it's optional for Juniors to belong to a Team (some Juniors are unassigned), placing the FK in Junior would create NULL values. In this case, you can create a <strong>third linking table</strong> instead, similar to how we handle M:N relationships.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 5: ONE-TO-ONE -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">5</div>
+      <h2>One-to-One (1:1) Relationships: The Tricky Ones</h2>
+    </div>
+    <div class="concept-body">
+      <p>With 1:1 relationships, both sides have "one", so cardinality alone can't tell us which is the parent and which is the child. Instead, we look at <strong>participation</strong> (mandatory vs optional) to decide.</p>
+
+      <div class="tip">
+        <strong>The golden rule for 1:1:</strong> The foreign key goes on the <strong>mandatory</strong> side. This ensures every FK value points to a real row, with no NULLs.
+      </div>
+
+      <p>There are four cases depending on the participation of each side. We'll use the same example throughout: <strong>Professor</strong> heads <strong>Department</strong>.</p>
+
+      <!-- CASE 1: m:m -->
+      <div style="margin-top: 1.5rem;">
+        <div class="case-label">Case 1: Mandatory : Mandatory (m:m)</div>
+        <p>Every Professor heads exactly one Department. Every Department is headed by exactly one Professor.</p>
+
+        <div class="info">
+          <strong>Approach:</strong> Merge both entities into a <strong>single table</strong>. Choose one PK as the table's primary key; the other becomes an alternate key.
+        </div>
+
+        <div class="schema-box">
+          <span class="comment">-- Both mandatory → merge into one table</span><br>
+          Professor(<span class="pk">staffid</span>, name, deptno, dname)<br>
+          <span class="comment">&nbsp;&nbsp;Alternate Key deptno</span>
+        </div>
+
+        <p style="font-size:0.9rem; color: var(--text-light);">This works because there are no "unmatched" rows on either side. Every professor maps to exactly one department and vice versa.</p>
+      </div>
+
+      <!-- CASE 2: o:m -->
+      <div style="margin-top: 1.5rem;">
+        <div class="case-label">Case 2: Optional : Mandatory (o:m)</div>
+        <p>It is <strong>optional</strong> for a Professor to head a Department (some don't). It is <strong>mandatory</strong> for a Department to be headed by a Professor (all departments have one).</p>
+
+        <div class="info">
+          <strong>Approach:</strong> The optional entity (Professor) is the <strong>parent</strong>. The mandatory entity (Department) is the <strong>child</strong>. Post the parent's PK into the child's table as FK.
+        </div>
+
+        <p><strong>Why?</strong> Let's see what happens if we choose wrong:</p>
+
+        <div class="table-example">
+          <div class="te-header">❌ Wrong: FK in Professor (the optional side)</div>
+          <table>
+            <tr><th>staffid</th><th>name</th><th>deptno (FK)</th></tr>
+            <tr><td>12</td><td>Kelly</td><td>X99</td></tr>
+            <tr><td>34</td><td>Ross</td><td>S03</td></tr>
+            <tr><td>45</td><td>Jones</td><td class="null-cell">NULL ✗</td></tr>
+            <tr><td>56</td><td>Smith</td><td>Z22</td></tr>
+          </table>
+        </div>
+
+        <p>Jones doesn't head a department → NULL in the FK. This is what we want to avoid!</p>
+
+        <div class="table-example">
+          <div class="te-header" style="background: var(--green);">✓ Correct: FK in Department (the mandatory side)</div>
+          <table>
+            <tr><th>deptno</th><th>dname</th><th>prof (FK)</th></tr>
+            <tr><td>X99</td><td>Science</td><td>12</td></tr>
+            <tr><td>S03</td><td>Maths</td><td>34</td></tr>
+            <tr><td>Z22</td><td>Arts</td><td>56</td></tr>
+          </table>
+        </div>
+
+        <p>Every department <em>must</em> have a professor, so every FK value is filled. No NULLs!</p>
+
+        <div class="schema-box">
+          <span class="comment">-- Optional side = parent</span><br>
+          Professor(<span class="pk">staffid</span>, name)<br><br>
+          <span class="comment">-- Mandatory side = child (gets the FK)</span><br>
+          Department(<span class="pk">deptno</span>, dname, <span class="fk">prof*</span>)<br>
+          <span class="comment">&nbsp;&nbsp;Foreign Key prof references Professor(staffid)</span>
+        </div>
+      </div>
+
+      <!-- CASE 3: m:o -->
+      <div style="margin-top: 1.5rem;">
+        <div class="case-label">Case 3: Mandatory : Optional (m:o)</div>
+        <p>It is <strong>mandatory</strong> for a Professor to head a Department. It is <strong>optional</strong> for a Department to have a Professor (some departments are unstaffed).</p>
+
+        <div class="info">
+          <strong>Same rule, just flipped:</strong> The optional entity (Department) is the <strong>parent</strong>. The mandatory entity (Professor) is the <strong>child</strong> and gets the FK.
+        </div>
+
+        <div class="schema-box">
+          <span class="comment">-- Optional side (Department) = parent</span><br>
+          Department(<span class="pk">deptno</span>, dname)<br><br>
+          <span class="comment">-- Mandatory side (Professor) = child (gets the FK)</span><br>
+          Professor(<span class="pk">staffid</span>, name, <span class="fk">dept*</span>)<br>
+          <span class="comment">&nbsp;&nbsp;Foreign Key dept references Department(deptno)</span>
+        </div>
+      </div>
+
+      <!-- CASE 4: o:o -->
+      <div style="margin-top: 1.5rem;">
+        <div class="case-label">Case 4: Optional : Optional (o:o)</div>
+        <p>Some Professors don't head a Department. Some Departments don't have a Professor. Whichever side we place the FK, we'll get NULLs.</p>
+
+        <div class="info">
+          <strong>Safe approach:</strong> Create a <strong>third linking table</strong> that only contains rows for Professors that actually head a Department. This avoids NULLs entirely.
+        </div>
+
+        <div class="schema-box">
+          <span class="comment">-- Both entities stay clean</span><br>
+          Professor(<span class="pk">staffid</span>, name)<br>
+          Department(<span class="pk">deptno</span>, dname)<br><br>
+          <span class="comment">-- New linking table, no NULLs possible</span><br>
+          Heads(<span class="pk"><span class="fk">deptno*</span></span>, <span class="fk">staffid*</span>)<br>
+          <span class="comment">&nbsp;&nbsp;Foreign Key deptno references Department(deptno)</span><br>
+          <span class="comment">&nbsp;&nbsp;Foreign Key staffid references Professor(staffid)</span>
+        </div>
+
+        <div class="tip">
+          <strong>Alternative approach:</strong> If you have additional information (for example, "most departments have a professor, but only a few professors head departments"), you can treat the side that's <em>closer to mandatory</em> as the child and place the FK there (accepting some NULLs). If you do this, <strong>document your assumption</strong>.
+        </div>
+      </div>
+
+      <!-- SUMMARY TABLE -->
+      <div style="margin-top: 1.5rem;">
+        <h3 style="color: var(--purple-dark); font-size: 1.05rem; margin-bottom: 0.6rem;">1:1 Summary</h3>
+        <table>
+          <tr><th>Participation</th><th>Parent</th><th>Child (gets FK)</th><th>Approach</th></tr>
+          <tr><td><strong>m : m</strong></td><td>n/a</td><td>n/a</td><td>Merge into one table</td></tr>
+          <tr><td><strong>o : m</strong></td><td>Optional side</td><td>Mandatory side</td><td>FK in child table</td></tr>
+          <tr><td><strong>m : o</strong></td><td>Optional side</td><td>Mandatory side</td><td>FK in child table</td></tr>
+          <tr><td><strong>o : o</strong></td><td>n/a</td><td>n/a</td><td>New linking table (safest)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 6: MANY-TO-MANY -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">6</div>
+      <h2>Many-to-Many (M:N) Relationships</h2>
+    </div>
+    <div class="concept-body">
+      <p>Many-to-many relationships <strong>always</strong> require a new linking table. There's no way around it. You can't put a FK on either side without creating multi-valued cells.</p>
+
+      <div class="info">
+        <strong>Rule:</strong> Create a new table for the relationship. Post a copy of <em>both</em> entities' PKs into it as FKs. These FKs typically form a <strong>composite primary key</strong> for the new table.
+      </div>
+
+      <p><strong>Example:</strong> A Treatment includes many Drugs. A Drug is used in many Treatments.</p>
+
+      <div class="schema-box">
+        <span class="comment">-- Both original entities</span><br>
+        Treatment(<span class="pk">treatID</span>, name)<br>
+        Drug(<span class="pk">drugID</span>, name)<br><br>
+        <span class="comment">-- New linking table with composite PK</span><br>
+        Includes(<span class="pk"><span class="fk">treatID*</span>, <span class="fk">drugID*</span></span>, dose, dietPlan)<br>
+        <span class="comment">&nbsp;&nbsp;Foreign Key treatID references Treatment(treatID)</span><br>
+        <span class="comment">&nbsp;&nbsp;Foreign Key drugID references Drug(drugID)</span>
+      </div>
+
+      <p>Notice that any <strong>attributes of the relationship</strong> (like dose and dietPlan) go into the linking table. They describe the association between a specific treatment and a specific drug, not either entity on its own.</p>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 7: MULTI-VALUED ATTRIBUTES -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">7</div>
+      <h2>Multi-Valued Attributes</h2>
+    </div>
+    <div class="concept-body">
+      <p>If an entity has a multi-valued attribute (e.g., an Employee can have many hobbies), you can't just put multiple values in one cell. Instead, treat it like a small M:N relationship.</p>
+
+      <div class="info">
+        <strong>Rule:</strong> Create a new table for the multi-valued attribute. Include the original entity's PK as a FK. The composite of the FK and the attribute typically forms the new table's PK.
+      </div>
+
+      <div class="schema-box">
+        <span class="comment">-- Original entity</span><br>
+        Employee(<span class="pk">eid</span>, netSalary)<br><br>
+        <span class="comment">-- New table for the multi-valued attribute</span><br>
+        EmployeeHobby(<span class="pk"><span class="fk">eid*</span>, hobby</span>)<br>
+        <span class="comment">&nbsp;&nbsp;Foreign Key eid references Employee(eid)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 8: COMPLETE TRANSFORMATION SUMMARY -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">8</div>
+      <h2>Quick Reference: Transformation Rules</h2>
+    </div>
+    <div class="concept-body">
+      <table>
+        <tr><th>What you have</th><th>What you do</th></tr>
+        <tr><td>Entity</td><td>Create a table with same attributes and PK</td></tr>
+        <tr><td>1:M relationship</td><td>FK goes in the "many" side's table (child)</td></tr>
+        <tr><td>1:1 (m:m)</td><td>Merge into one table</td></tr>
+        <tr><td>1:1 (one side mandatory)</td><td>FK goes on the mandatory side</td></tr>
+        <tr><td>1:1 (o:o)</td><td>New linking table (or FK with documented assumption)</td></tr>
+        <tr><td>M:N relationship</td><td>Always a new linking table with composite PK</td></tr>
+        <tr><td>Multi-valued attribute</td><td>New table with FK + attribute as composite PK</td></tr>
+        <tr><td>Relationship attributes</td><td>Go into whichever table the FK was placed in</td></tr>
+      </table>
+
+      <div class="warning">
+        <strong>Always check your result:</strong> Are there NULLs in any FK column? Are there multiple values in any cell? If yes, you've probably placed the FK on the wrong side or need a linking table.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 9: NOTATION GUIDE -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">9</div>
+      <h2>Writing Relational Schema</h2>
+    </div>
+    <div class="concept-body">
+      <p>When writing out your logical model, use this notation, called DBDL (Database Design Language):</p>
+
+      <div class="schema-box">
+        <span class="comment">-- Table name, with attributes in brackets</span><br>
+        <span class="comment">-- Underline the primary key</span><br>
+        <span class="comment">-- Mark foreign keys with * and state what they reference</span><br><br>
+        Student(<span class="pk">studentID</span>, fName, lName, <span class="fk">courseID*</span>)<br>
+        <span class="comment">&nbsp;&nbsp;Primary Key studentID</span><br>
+        <span class="comment">&nbsp;&nbsp;Foreign Key courseID references Course(courseID)</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="mini-card">
+          <h4>Primary Key</h4>
+          <p>Underlined in the schema. Uniquely identifies each row. Cannot be NULL.</p>
+        </div>
+        <div class="mini-card highlight-blue">
+          <h4>Foreign Key</h4>
+          <p>Marked with <code>*</code> in the schema. References a PK in another table. Creates the link between tables.</p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <strong>Composite primary keys</strong> occur when a single attribute isn't enough to uniquely identify a row. For example, in a Viewing table, you might need both <code>clientNo</code> and <code>propertyNo</code> together as the PK, because the same client could view different properties, and the same property could be viewed by different clients.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 10: PRACTICE QUIZZES -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">10</div>
+      <h2>Check Your Understanding</h2>
+    </div>
+    <div class="concept-body">
+
+      <!-- Quiz 1 -->
+      <div class="quiz-question">
+        <h4>Quiz 1: In a 1:1 relationship, where does the foreign key go?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Always on the left entity</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">On the mandatory side</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">On the optional side</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">It doesn't matter, pick either side</div>
+        </div>
+        <div class="quiz-reveal">
+          The FK goes on the <strong>mandatory</strong> side. Since every row on the mandatory side must participate in the relationship, every FK value will be filled, avoiding NULLs.
+        </div>
+      </div>
+
+      <!-- Quiz 2 -->
+      <div class="quiz-question">
+        <h4>Quiz 2: In a 1:M relationship, which entity is the parent?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">The entity on the "one" side</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">The entity on the "many" side</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">The entity with the most attributes</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Either, it doesn't matter</div>
+        </div>
+        <div class="quiz-reveal">
+          The "one" side is the parent. Its PK gets copied into the "many" side as a FK. Think: a parent can have many children, so the parent's PK appears in each child's row.
+        </div>
+      </div>
+
+      <!-- Quiz 3 -->
+      <div class="quiz-question">
+        <h4>Quiz 3: A Student enrols on many Modules. A Module has many Students. What do you create?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Put moduleID as FK in Student</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Put studentID as FK in Module</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Create a new linking table (e.g., Enrolment) with both PKs</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Merge Student and Module into one table</div>
+        </div>
+        <div class="quiz-reveal">
+          M:N relationships <strong>always</strong> need a new linking table. Putting the FK on either side would require multiple values in one cell. The linking table (e.g., Enrolment) has studentID and moduleID as FKs, forming a composite PK.
+        </div>
+      </div>
+
+      <!-- Quiz 4 -->
+      <div class="quiz-question">
+        <h4>Quiz 4: Every Employee must work in a Department. Not all Departments have Employees. This is a 1:M relationship (one Department has many Employees). Where does the FK go?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">In the Employee table (deptID as FK)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">In the Department table (employeeID as FK)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">In a new linking table</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">We need more information to decide</div>
+        </div>
+        <div class="quiz-reveal">
+          In a 1:M relationship, the FK goes on the "many" side, which is Employee. Each employee row stores the deptID of the department they work in. This also avoids NULLs, since every employee must work in a department (mandatory participation).
+        </div>
+      </div>
+
+      <!-- Quiz 5 -->
+      <div class="quiz-question">
+        <h4>Quiz 5: A Passport belongs to one Person. A Person has one Passport. Both sides are mandatory. How do you represent this?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Put passportNo as FK in Person</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Put personID as FK in Passport</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Merge into a single table</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Create a new linking table</div>
+        </div>
+        <div class="quiz-reveal">
+          1:1 with mandatory participation on both sides → merge into one table. Every person has exactly one passport and every passport belongs to exactly one person, so there's no reason to keep them separate. Pick one PK (e.g., personID) and the other becomes an alternate key.
+        </div>
+      </div>
+
+      <!-- Quiz 6 -->
+      <div class="quiz-question">
+        <h4>Quiz 6: A Car may or may not be assigned to a Driver. A Driver may or may not have a Car. This is a 1:1 relationship. What's the safest approach?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Put driverID as FK in Car</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Put carID as FK in Driver</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Create a new linking table (e.g., Assignment)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Merge into a single table</div>
+        </div>
+        <div class="quiz-reveal">
+          1:1 with optional participation on both sides → the safest approach is a new linking table. Placing the FK on either side would produce NULLs for the unmatched rows. The linking table only contains rows for actual Car–Driver pairings, so no NULLs.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SECTION 11: PRACTICE EXERCISE -->
+  <!-- ============================================ -->
+  <div class="concept-card">
+    <div class="concept-header">
+      <div class="concept-num">11</div>
+      <h2>Practice Exercise</h2>
+    </div>
+    <div class="concept-body">
+      <p>Transform the following ER description into a relational schema. Identify the tables, primary keys, and foreign keys.</p>
+
+      <div class="info" style="font-size: 0.95rem;">
+        <strong>Scenario:</strong> A small music school tracks its Teachers and Instruments.<br><br>
+        • Each Teacher has a <code>teacherID</code>, <code>name</code>, and <code>phone</code>.<br>
+        • Each Instrument has an <code>instrumentID</code>, <code>name</code>, and <code>category</code>.<br>
+        • Each Lesson has a <code>lessonID</code>, <code>date</code>, <code>time</code>, and <code>duration</code>.<br>
+        • Each Student has a <code>studentID</code>, <code>name</code>, and <code>level</code>.<br><br>
+        <strong>Relationships:</strong><br>
+        • A Teacher <strong>specialises in</strong> many Instruments. An Instrument can be taught by many Teachers. <em>[M:N]</em><br>
+        • A Teacher <strong>gives</strong> many Lessons. Each Lesson is given by exactly one Teacher. <em>[1:M, mandatory for Lesson]</em><br>
+        • A Student <strong>attends</strong> many Lessons. A Lesson has many Students. <em>[M:N]</em><br>
+        • Each Student must have exactly one Teacher as a <strong>mentor</strong>. A Teacher may or may not mentor Students. <em>[1:1-ish? Think carefully about the cardinality!]</em>
+      </div>
+
+      <details>
+        <summary>Click to reveal answer</summary>
+        <div class="reveal-content">
+          <strong>Tables from entities:</strong><br>
+          <code>Teacher(<u>teacherID</u>, name, phone)</code><br>
+          <code>Instrument(<u>instrumentID</u>, name, category)</code><br>
+          <code>Lesson(<u>lessonID</u>, date, time, duration)</code><br>
+          <code>Student(<u>studentID</u>, name, level)</code><br><br>
+
+          <strong>Teacher specialises in Instrument [M:N]:</strong><br>
+          <code>Specialisation(<u>teacherID*, instrumentID*</u>)</code>. New linking table with composite PK.<br><br>
+
+          <strong>Teacher gives Lesson [1:M, mandatory for Lesson]:</strong><br>
+          <code>Lesson(<u>lessonID</u>, date, time, duration, <em>teacherID*</em>)</code>. FK in Lesson (the "many" side). Every lesson must have a teacher, so no NULLs.<br><br>
+
+          <strong>Student attends Lesson [M:N]:</strong><br>
+          <code>Attendance(<u>studentID*, lessonID*</u>)</code>. New linking table with composite PK.<br><br>
+
+          <strong>Teacher mentors Student:</strong><br>
+          <em>Careful!</em> This is actually <strong>1:M</strong> (one teacher can mentor many students), not 1:1. Each student has exactly one mentor, but a teacher may mentor multiple students.<br>
+          <code>Student(<u>studentID</u>, name, level, <em>mentorID*</em>)</code>. FK in Student referencing Teacher(teacherID). Mandatory for Student, so no NULLs.
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <p style="text-align:center; color:var(--text-light); font-size:0.93rem; margin-top: 1rem;">
+    Keep this page open during labs and while working on your coursework!
+  </p>
+
+</div>
+
+<footer>
+  CM1120 Database Systems · Robert Gordon University
+</footer>
+
+<script>
+function checkAnswer(element, isCorrect) {
+  const options = element.parentElement.querySelectorAll('.quiz-option');
+  options.forEach(opt => {
+    opt.classList.remove('correct', 'incorrect');
+  });
+  
+  if (isCorrect) {
+    element.classList.add('correct');
+  } else {
+    element.classList.add('incorrect');
+    options.forEach(opt => {
+      if (opt.getAttribute('onclick').includes('true')) {
+        opt.classList.add('correct');
+      }
+    });
+  }
+  
+  const reveal = element.parentElement.nextElementSibling;
+  reveal.classList.add('show');
+}
+</script>
+
+</body>
+</html>
