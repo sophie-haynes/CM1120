@@ -780,6 +780,43 @@
           <span class="comment">&nbsp;&nbsp;Foreign Key staffid references Professor(staffid)</span>
         </div>
 
+        <p>Here's what the resulting logical model looks like. The linking table sits between the two original entities:</p>
+
+        <div class="visual-panel">
+          <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg">
+            <!-- Professor entity -->
+            <rect x="20" y="30" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+            <text x="100" y="55" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Professor</text>
+            <!-- Heads linking entity -->
+            <rect x="260" y="30" width="160" height="40" rx="6" fill="#F7ECF8" stroke="#682773" stroke-width="2"/>
+            <text x="340" y="55" text-anchor="middle" fill="#4A1A52" font-weight="700" font-size="14" font-family="Source Sans 3">Heads</text>
+            <!-- Department entity -->
+            <rect x="500" y="30" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+            <text x="580" y="55" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Department</text>
+
+            <!-- Line: Professor — Heads -->
+            <line x1="180" y1="50" x2="260" y2="50" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Mandatory (filled circle) on Heads side -->
+            <circle cx="250" cy="50" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+            <!-- Optional (empty circle) on Professor side -->
+            <circle cx="192" cy="50" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+
+            <!-- Line: Heads — Department -->
+            <line x1="420" y1="50" x2="500" y2="50" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Mandatory (filled circle) on Heads side -->
+            <circle cx="430" cy="50" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+            <!-- Optional (empty circle) on Department side -->
+            <circle cx="488" cy="50" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+
+            <!-- Labels -->
+            <text x="100" y="90" text-anchor="middle" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">Optional</text>
+            <text x="340" y="90" text-anchor="middle" fill="#682773" font-size="11" font-weight="600" font-family="Source Sans 3">Mandatory (linking table)</text>
+            <text x="580" y="90" text-anchor="middle" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">Optional</text>
+
+            <text x="350" y="112" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3">The linking table only contains rows where a Professor actually heads a Department</text>
+          </svg>
+        </div>
+
         <div class="tip">
           <strong>Alternative approach:</strong> If you have additional information (for example, "most departments have a professor, but only a few professors head departments"), you can treat the side that's <em>closer to mandatory</em> as the child and place the FK there (accepting some NULLs). If you do this, <strong>document your assumption</strong>.
         </div>
