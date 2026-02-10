@@ -546,15 +546,28 @@
       <p><strong>Example:</strong> A Team contains many Juniors. Each Junior belongs to one Team.</p>
 
       <div class="visual-panel">
-        <svg viewBox="0 0 680 70" xmlns="http://www.w3.org/2000/svg">
-          <rect x="40" y="15" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
-          <text x="120" y="40" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Team</text>
-          <rect x="480" y="15" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
-          <text x="560" y="40" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Junior</text>
-          <line x1="200" y1="35" x2="480" y2="35" stroke="#682773" stroke-width="2"/>
-          <text x="340" y="28" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">contains</text>
-          <text x="220" y="58" fill="#2980B9" font-size="12" font-weight="600" font-family="Source Sans 3">1 (parent)</text>
-          <text x="440" y="58" fill="#E67E22" font-size="12" font-weight="600" font-family="Source Sans 3">M (child)</text>
+        <svg viewBox="0 0 680 90" xmlns="http://www.w3.org/2000/svg">
+          <!-- Team entity -->
+          <rect x="40" y="20" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+          <text x="120" y="45" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Team</text>
+          <!-- Junior entity -->
+          <rect x="480" y="20" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="560" y="45" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Junior</text>
+          <!-- Relationship line -->
+          <line x1="200" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Relationship label -->
+          <text x="340" y="33" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">contains</text>
+          <!-- Optional (empty circle) on Team side -->
+          <circle cx="212" cy="40" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Crow's foot on Junior side (prongs enter the entity, converge toward the line) -->
+          <line x1="450" y1="40" x2="480" y2="28" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="450" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="450" y1="40" x2="480" y2="52" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Mandatory (filled circle) on Junior side, between crow's foot and line -->
+          <circle cx="442" cy="40" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+          <!-- Labels -->
+          <text x="205" y="72" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">One, optional (parent)</text>
+          <text x="430" y="72" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">Many, mandatory (child)</text>
         </svg>
       </div>
 
@@ -600,6 +613,24 @@
           <strong>Approach:</strong> Merge both entities into a <strong>single table</strong>. Choose one PK as the table's primary key; the other becomes an alternate key.
         </div>
 
+        <div class="visual-panel">
+          <svg viewBox="0 0 680 90" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="20" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+            <text x="120" y="45" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Professor</text>
+            <rect x="480" y="20" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+            <text x="560" y="45" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Department</text>
+            <line x1="200" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+            <text x="340" y="33" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">heads</text>
+            <!-- Mandatory (filled circle) on both sides -->
+            <circle cx="210" cy="40" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+            <circle cx="470" cy="40" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+            <!-- Labels -->
+            <text x="190" y="72" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">Mandatory</text>
+            <text x="460" y="72" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">Mandatory</text>
+          </svg>
+          <div class="visual-caption">Both sides mandatory, so merge into one table</div>
+        </div>
+
         <div class="schema-box">
           <span class="comment">-- Both mandatory → merge into one table</span><br>
           Professor(<span class="pk">staffid</span>, name, deptno, dname)<br>
@@ -616,6 +647,28 @@
 
         <div class="info">
           <strong>Approach:</strong> The optional entity (Professor) is the <strong>parent</strong>. The mandatory entity (Department) is the <strong>child</strong>. Post the parent's PK into the child's table as FK.
+        </div>
+
+        <div class="visual-panel">
+          <svg viewBox="0 0 680 90" xmlns="http://www.w3.org/2000/svg">
+            <!-- Professor entity -->
+            <rect x="40" y="20" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+            <text x="120" y="45" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Professor</text>
+            <!-- Department entity -->
+            <rect x="480" y="20" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+            <text x="560" y="45" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Department</text>
+            <!-- Relationship line -->
+            <line x1="200" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Relationship label -->
+            <text x="340" y="33" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">heads</text>
+            <!-- Optional (empty circle) on Professor side -->
+            <circle cx="210" cy="40" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Mandatory (filled circle) on Department side -->
+            <circle cx="470" cy="40" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+            <!-- Labels -->
+            <text x="190" y="72" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">Optional (parent)</text>
+            <text x="440" y="72" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">Mandatory (child, gets FK)</text>
+          </svg>
         </div>
 
         <p><strong>Why?</strong> Let's see what happens if we choose wrong:</p>
@@ -663,6 +716,24 @@
           <strong>Same rule, just flipped:</strong> The optional entity (Department) is the <strong>parent</strong>. The mandatory entity (Professor) is the <strong>child</strong> and gets the FK.
         </div>
 
+        <div class="visual-panel">
+          <svg viewBox="0 0 680 90" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="20" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+            <text x="120" y="45" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Professor</text>
+            <rect x="480" y="20" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+            <text x="560" y="45" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Department</text>
+            <line x1="200" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+            <text x="340" y="33" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">heads</text>
+            <!-- Mandatory (filled circle) on Professor side -->
+            <circle cx="210" cy="40" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+            <!-- Optional (empty circle) on Department side -->
+            <circle cx="470" cy="40" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Labels -->
+            <text x="175" y="72" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">Mandatory (child, gets FK)</text>
+            <text x="460" y="72" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">Optional (parent)</text>
+          </svg>
+        </div>
+
         <div class="schema-box">
           <span class="comment">-- Optional side (Department) = parent</span><br>
           Department(<span class="pk">deptno</span>, dname)<br><br>
@@ -679,6 +750,24 @@
 
         <div class="info">
           <strong>Safe approach:</strong> Create a <strong>third linking table</strong> that only contains rows for Professors that actually head a Department. This avoids NULLs entirely.
+        </div>
+
+        <div class="visual-panel">
+          <svg viewBox="0 0 680 90" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="20" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+            <text x="120" y="45" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Professor</text>
+            <rect x="480" y="20" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+            <text x="560" y="45" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Department</text>
+            <line x1="200" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+            <text x="340" y="33" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">heads</text>
+            <!-- Optional (empty circle) on both sides -->
+            <circle cx="210" cy="40" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+            <circle cx="470" cy="40" r="6" fill="white" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Labels -->
+            <text x="190" y="72" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">Optional</text>
+            <text x="460" y="72" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">Optional</text>
+          </svg>
+          <div class="visual-caption">Both sides optional, so use a linking table (safest) or make an assumption</div>
         </div>
 
         <div class="schema-box">
@@ -727,6 +816,33 @@
 
       <p><strong>Example:</strong> A Treatment includes many Drugs. A Drug is used in many Treatments.</p>
 
+      <div class="visual-panel">
+        <svg viewBox="0 0 680 90" xmlns="http://www.w3.org/2000/svg">
+          <!-- Treatment entity -->
+          <rect x="40" y="20" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+          <text x="120" y="45" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Treatment</text>
+          <!-- Drug entity -->
+          <rect x="480" y="20" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="560" y="45" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Drug</text>
+          <!-- Relationship line -->
+          <line x1="200" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Relationship label -->
+          <text x="340" y="33" text-anchor="middle" fill="#682773" font-size="12" font-family="Source Sans 3">includes</text>
+          <!-- Crow's foot on Treatment side (prongs enter entity, converge toward line) -->
+          <line x1="230" y1="40" x2="200" y2="28" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="230" y1="40" x2="200" y2="40" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="230" y1="40" x2="200" y2="52" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Crow's foot on Drug side (prongs enter entity, converge toward line) -->
+          <line x1="450" y1="40" x2="480" y2="28" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="450" y1="40" x2="480" y2="40" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="450" y1="40" x2="480" y2="52" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Labels -->
+          <text x="200" y="72" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">Many</text>
+          <text x="475" y="72" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">Many</text>
+        </svg>
+        <div class="visual-caption">Crow's feet on both sides = always needs a linking table</div>
+      </div>
+
       <div class="schema-box">
         <span class="comment">-- Both original entities</span><br>
         Treatment(<span class="pk">treatID</span>, name)<br>
@@ -738,6 +854,47 @@
       </div>
 
       <p>Notice that any <strong>attributes of the relationship</strong> (like dose and dietPlan) go into the linking table. They describe the association between a specific treatment and a specific drug, not either entity on its own.</p>
+
+      <p>Here's what the resulting logical model looks like. The linking table sits between the two original tables, with foreign keys pointing back to each:</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- Treatment entity -->
+          <rect x="20" y="30" width="160" height="40" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+          <text x="100" y="55" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="14" font-family="Source Sans 3">Treatment</text>
+          <!-- Includes linking entity -->
+          <rect x="260" y="30" width="160" height="40" rx="6" fill="#F7ECF8" stroke="#682773" stroke-width="2"/>
+          <text x="340" y="55" text-anchor="middle" fill="#4A1A52" font-weight="700" font-size="14" font-family="Source Sans 3">Includes</text>
+          <!-- Drug entity -->
+          <rect x="500" y="30" width="160" height="40" rx="6" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="580" y="55" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3">Drug</text>
+
+          <!-- Line: Treatment — Includes -->
+          <line x1="180" y1="50" x2="260" y2="50" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Crow's foot on Includes side (prongs enter Includes, converge toward Treatment) -->
+          <line x1="240" y1="50" x2="260" y2="38" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="240" y1="50" x2="260" y2="50" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="240" y1="50" x2="260" y2="62" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Mandatory circle on Includes side -->
+          <circle cx="234" cy="50" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+
+          <!-- Line: Includes — Drug -->
+          <line x1="420" y1="50" x2="500" y2="50" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Crow's foot on Includes side (prongs enter Includes, converge toward Drug) -->
+          <line x1="440" y1="50" x2="420" y2="38" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="440" y1="50" x2="420" y2="50" stroke="#2C3E50" stroke-width="2"/>
+          <line x1="440" y1="50" x2="420" y2="62" stroke="#2C3E50" stroke-width="2"/>
+          <!-- Mandatory circle on Includes side -->
+          <circle cx="446" cy="50" r="5" fill="#2C3E50" stroke="#2C3E50" stroke-width="1"/>
+
+          <!-- Labels -->
+          <text x="100" y="90" text-anchor="middle" fill="#2980B9" font-size="11" font-weight="600" font-family="Source Sans 3">One</text>
+          <text x="340" y="90" text-anchor="middle" fill="#682773" font-size="11" font-weight="600" font-family="Source Sans 3">Many (linking table)</text>
+          <text x="580" y="90" text-anchor="middle" fill="#E67E22" font-size="11" font-weight="600" font-family="Source Sans 3">One</text>
+
+          <text x="350" y="112" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3">The M:N relationship becomes two 1:M relationships through the linking table</text>
+        </svg>
+      </div>
     </div>
   </div>
 
@@ -802,7 +959,9 @@
       <h2>Writing Relational Schema</h2>
     </div>
     <div class="concept-body">
-      <p>When writing out your logical model, use this notation, called DBDL (Database Design Language):</p>
+      <p>A <strong>relational schema</strong> is the complete written description of your logical model: all the tables, their columns, primary keys, and foreign keys, written in a standard format. It's the end product of the transformation process. Think of it as a blueprint that lists every table and how they connect.</p>
+
+      <p>When writing out your relational schema, use this notation, called DBDL (Database Design Language):</p>
 
       <div class="schema-box">
         <span class="comment">-- Table name, with attributes in brackets</span><br>
