@@ -750,7 +750,7 @@
       <h2>Multi-Valued Attributes</h2>
     </div>
     <div class="concept-body">
-      <p>If an entity has a multi-valued attribute (e.g., an Employee can have many hobbies), you can't just put multiple values in one cell. Instead, treat it like a small M:N relationship.</p>
+      <p>If an entity has a multi-valued attribute (e.g. an Employee can have many hobbies), you can't just put multiple values in one cell. Instead, treat it like a small M:N relationship.</p>
 
       <div class="info">
         <strong>Rule:</strong> Create a new table for the multi-valued attribute. Include the original entity's PK as a FK. The composite of the FK and the attribute typically forms the new table's PK.
@@ -874,11 +874,11 @@
         <div class="quiz-options">
           <div class="quiz-option" onclick="checkAnswer(this, false)">Put moduleID as FK in Student</div>
           <div class="quiz-option" onclick="checkAnswer(this, false)">Put studentID as FK in Module</div>
-          <div class="quiz-option" onclick="checkAnswer(this, true)">Create a new linking table (e.g., Enrolment) with both PKs</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Create a new linking table (e.g. Enrolment) with both PKs</div>
           <div class="quiz-option" onclick="checkAnswer(this, false)">Merge Student and Module into one table</div>
         </div>
         <div class="quiz-reveal">
-          M:N relationships <strong>always</strong> need a new linking table. Putting the FK on either side would require multiple values in one cell. The linking table (e.g., Enrolment) has studentID and moduleID as FKs, forming a composite PK.
+          M:N relationships <strong>always</strong> need a new linking table. Putting the FK on either side would require multiple values in one cell. The linking table (e.g. Enrolment) has studentID and moduleID as FKs, forming a composite PK.
         </div>
       </div>
 
@@ -906,7 +906,7 @@
           <div class="quiz-option" onclick="checkAnswer(this, false)">Create a new linking table</div>
         </div>
         <div class="quiz-reveal">
-          1:1 with mandatory participation on both sides → merge into one table. Every person has exactly one passport and every passport belongs to exactly one person, so there's no reason to keep them separate. Pick one PK (e.g., personID) and the other becomes an alternate key.
+          1:1 with mandatory participation on both sides → merge into one table. Every person has exactly one passport and every passport belongs to exactly one person, so there's no reason to keep them separate. Pick one PK (e.g. personID) and the other becomes an alternate key.
         </div>
       </div>
 
@@ -916,7 +916,7 @@
         <div class="quiz-options">
           <div class="quiz-option" onclick="checkAnswer(this, false)">Put driverID as FK in Car</div>
           <div class="quiz-option" onclick="checkAnswer(this, false)">Put carID as FK in Driver</div>
-          <div class="quiz-option" onclick="checkAnswer(this, true)">Create a new linking table (e.g., Assignment)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Create a new linking table (e.g. Assignment)</div>
           <div class="quiz-option" onclick="checkAnswer(this, false)">Merge into a single table</div>
         </div>
         <div class="quiz-reveal">
