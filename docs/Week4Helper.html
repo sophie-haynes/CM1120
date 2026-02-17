@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helper, CM1120 Database Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #682773;
+    --purple-light: #F7ECF8;
+    --purple-mid: #9B59B6;
+    --purple-dark: #4A1A52;
+    --orange: #E67E22;
+    --orange-light: #FEF5EC;
+    --blue: #2980B9;
+    --blue-light: #EBF5FB;
+    --green: #27AE60;
+    --green-light: #EAFAF1;
+    --red: #E74C3C;
+    --red-light: #FDEDEC;
+    --yellow: #F1C40F;
+    --yellow-light: #FEF9E7;
+    --text: #2C3E50;
+    --text-light: #5D6D7E;
+    --bg: #FAFBFC;
+    --card-bg: #FFFFFF;
+    --border: #E8E8E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: white;
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+  }
+  header .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #f0e0f4;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3em 1em;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  header p {
+    font-size: 1.05rem;
+    opacity: 0.88;
+    max-width: 640px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .intro-box {
+    background: var(--purple-light);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 8px 8px 0;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.97rem;
+  }
+  .intro-box strong { color: var(--purple); }
+
+  .toc {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--purple);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem 1.5rem;
+  }
+  .toc a {
+    color: var(--purple);
+    text-decoration: none;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0;
+  }
+  .toc a:hover { text-decoration: underline; }
+  .toc a .num {
+    background: var(--purple-light);
+    color: var(--purple);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .concept {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .concept-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--purple-light);
+    border-bottom: 1px solid #EDE0F0;
+  }
+  .concept-num {
+    width: 36px; height: 36px;
+    background: var(--purple);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .concept-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+  }
+  .concept-body {
+    padding: 1.5rem;
+  }
+  .concept-body p {
+    margin-bottom: 1rem;
+  }
+
+  .visual-panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    text-align: center;
+  }
+  .visual-panel svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .visual-caption {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.6rem;
+    font-style: italic;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 650px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .mini-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .mini-card h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--purple);
+  }
+  .mini-card p {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+  }
+  .mini-card.highlight-blue   { border-color: var(--blue);   background: var(--blue-light);   }
+  .mini-card.highlight-blue h4   { color: var(--blue);   }
+  .mini-card.highlight-orange { border-color: var(--orange); background: var(--orange-light); }
+  .mini-card.highlight-orange h4 { color: var(--orange); }
+  .mini-card.highlight-green  { border-color: var(--green);  background: var(--green-light);  }
+  .mini-card.highlight-green h4  { color: var(--green);  }
+  .mini-card.highlight-red    { border-color: var(--red);    background: var(--red-light);    }
+  .mini-card.highlight-red h4    { color: var(--red);    }
+
+  .example {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .example strong { color: #1E8449; }
+
+  .warning {
+    background: var(--orange-light);
+    border-left: 4px solid var(--orange);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .warning strong { color: #B7560F; }
+
+  .info {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .info strong { color: #1A5276; }
+
+  .danger {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .danger strong { color: #922B21; }
+
+  .key-term {
+    display: inline-block;
+    background: var(--purple-light);
+    color: var(--purple-dark);
+    font-weight: 600;
+    padding: 0.1em 0.45em;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  code {
+    font-family: 'Source Code Pro', monospace;
+    background: #F0EDF2;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--purple-dark);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  th {
+    background: var(--purple);
+    color: white;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--purple-light); }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">CM1120 &middot; Week 4</div>
+  <h1>Normalisation</h1>
+  <p>Why badly designed tables cause problems, and a step-by-step method for fixing them.</p>
+</header>
+
+<div class="container">
+
+  <div class="intro-box">
+    <strong>How to use this document:</strong> Read through it before the lecture to get a sense of the key ideas. Then keep it open during the lecture and lab as a reference. You do not need to memorise everything here; the goal is to have it nearby when you need it.
+  </div>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <div class="toc-grid">
+      <a href="#s1"><span class="num">1</span> Where Does This Fit?</a>
+      <a href="#s2"><span class="num">2</span> The Problem: Redundancy</a>
+      <a href="#s3"><span class="num">3</span> The Three Anomalies</a>
+      <a href="#s4"><span class="num">4</span> First Normal Form (1NF)</a>
+      <a href="#s5"><span class="num">5</span> Functional Dependency</a>
+      <a href="#s6"><span class="num">6</span> Second Normal Form (2NF)</a>
+      <a href="#s7"><span class="num">7</span> Third Normal Form (3NF)</a>
+      <a href="#s8"><span class="num">8</span> Putting It All Together</a>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 1: CONTEXT -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s1">
+    <div class="concept-header">
+      <div class="concept-num">1</div>
+      <h2>Where Does Normalisation Fit?</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>In previous weeks you built a <span class="key-term">conceptual model</span> (an ER diagram) and then transformed it into a <span class="key-term">logical model</span> (tables with primary keys and foreign keys). Normalisation is a technique for checking whether those tables are well designed. If they have problems, normalisation gives you a structured method for fixing them by splitting tables apart.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 100" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <rect x="10" y="25" width="160" height="50" rx="8" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+          <text x="90" y="47" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">ER Diagram</text>
+          <text x="90" y="64" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">Conceptual model</text>
+
+          <line x1="175" y1="50" x2="215" y2="50" stroke="#5D6D7E" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <rect x="220" y="25" width="160" height="50" rx="8" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="300" y="47" text-anchor="middle" fill="#784212" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">Tables + Keys</text>
+          <text x="300" y="64" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">Logical model</text>
+
+          <line x1="385" y1="50" x2="425" y2="50" stroke="#5D6D7E" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <rect x="430" y="25" width="160" height="50" rx="8" fill="#F7ECF8" stroke="#682773" stroke-width="2"/>
+          <text x="510" y="47" text-anchor="middle" fill="#4A1A52" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">Normalisation</text>
+          <text x="510" y="64" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">Check + improve</text>
+
+          <line x1="595" y1="50" x2="635" y2="50" stroke="#5D6D7E" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <rect x="640" y="25" width="110" height="50" rx="8" fill="#EAFAF1" stroke="#27AE60" stroke-width="2"/>
+          <text x="695" y="47" text-anchor="middle" fill="#1E8449" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">SQL</text>
+          <text x="695" y="64" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">Physical model</text>
+
+          <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5D6D7E"/></marker></defs>
+        </svg>
+        <div class="visual-caption">Figure 1: Normalisation sits between logical design and physical implementation.</div>
+      </div>
+
+      <p>Normalisation can also be used on its own as a "bottom-up" design technique, where you start from raw data (such as a form or spreadsheet) and work towards well-structured tables. In this module, you will mostly use it as a validation step after creating your logical model.</p>
+
+      <div class="info">
+        <strong>Good to know:</strong> The textbook (Section 14.2) describes both approaches. For the coursework, think of normalisation as quality control for your tables.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 2: THE PROBLEM -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s2">
+    <div class="concept-header">
+      <div class="concept-num">2</div>
+      <h2>The Problem: Data Redundancy</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>Imagine you store staff and branch information together in a single table. Every row for a staff member also includes the full address of the branch they work at. If three people work at Branch B1, the address "42 Victoria Rd" appears three times. This repeated information is called <span class="key-term">data redundancy</span>.</p>
+
+      <table>
+        <tr><th>StaffId</th><th>Name</th><th>Staff Address</th><th>Branch</th><th>Branch Address</th></tr>
+        <tr><td>S1</td><td>Fred Bloggs</td><td>23 Acacia Gardens</td><td>B1</td><td style="color:var(--red);font-weight:600;">42 Victoria Rd</td></tr>
+        <tr><td>S2</td><td>Bill Sykes</td><td>17 Mafeking Terrace</td><td>B1</td><td style="color:var(--red);font-weight:600;">42 Victoria Rd</td></tr>
+        <tr><td>S3</td><td>George Shaw</td><td>42 Privet Drive</td><td>B1</td><td style="color:var(--red);font-weight:600;">42 Victoria Rd</td></tr>
+        <tr><td>S4</td><td>John Doe</td><td>5 Mornington Crescent</td><td>B2</td><td>112 King St</td></tr>
+        <tr><td>S5</td><td>Tommy Atkins</td><td>10 Rillington Place</td><td>B2</td><td>112 King St</td></tr>
+      </table>
+
+      <p>Redundancy wastes storage space and makes data entry slower. More importantly, it creates the conditions for three types of error called <span class="key-term">anomalies</span>.</p>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 3: THE THREE ANOMALIES -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s3">
+    <div class="concept-header">
+      <div class="concept-num">3</div>
+      <h2>The Three Anomalies</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>An <span class="key-term">anomaly</span> is a situation where data becomes inconsistent, or where you lose information that you did not intend to lose. Anomalies happen because a table is trying to store information about more than one topic at the same time.</p>
+
+      <div class="grid-3">
+        <div class="mini-card highlight-orange">
+          <h4>Insertion Anomaly</h4>
+          <p>You cannot add a new branch until it has staff, because the primary key (StaffId) cannot be NULL.</p>
+        </div>
+        <div class="mini-card highlight-red">
+          <h4>Update Anomaly</h4>
+          <p>Changing a branch address means updating every row for every staff member at that branch. Miss one and the data is inconsistent.</p>
+        </div>
+        <div class="mini-card highlight-blue">
+          <h4>Deletion Anomaly</h4>
+          <p>If the last staff member at a branch leaves and you delete their row, you also lose the branch address.</p>
+        </div>
+      </div>
+
+      <p>The fix is to separate the data into two tables: a Staff table and a Branch table. The branch address is stored once in the Branch table, and the Staff table uses a foreign key (Branch#) to link to it. This removes the redundancy, and all three anomalies disappear.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Staff table -->
+          <rect x="20" y="10" width="340" height="30" rx="6" fill="#682773"/>
+          <text x="30" y="30" fill="white" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">Staff</text>
+          <rect x="20" y="40" width="340" height="25" rx="0" fill="#EBF5FB" stroke="#E8E8E8"/>
+          <text x="30" y="57" fill="#2C3E50" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">StaffId (PK)  |  Name  |  Staff Address  |  Branch# (FK)</text>
+          <rect x="20" y="65" width="340" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
+          <text x="30" y="80" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S1  |  Fred Bloggs  |  23 Acacia Gardens  |  B1</text>
+          <rect x="20" y="87" width="340" height="22" rx="0" fill="#F7ECF8" stroke="#E8E8E8"/>
+          <text x="30" y="102" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S2  |  Bill Sykes  |  17 Mafeking Terrace  |  B1</text>
+          <rect x="20" y="109" width="340" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
+          <text x="30" y="124" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S4  |  John Doe  |  5 Mornington Cres  |  B2</text>
+
+          <!-- Branch table -->
+          <rect x="440" y="10" width="280" height="30" rx="6" fill="#682773"/>
+          <text x="450" y="30" fill="white" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">Branch</text>
+          <rect x="440" y="40" width="280" height="25" rx="0" fill="#EBF5FB" stroke="#E8E8E8"/>
+          <text x="450" y="57" fill="#2C3E50" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">Branch# (PK)  |  Address</text>
+          <rect x="440" y="65" width="280" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
+          <text x="450" y="80" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">B1  |  42 Victoria Rd</text>
+          <rect x="440" y="87" width="280" height="22" rx="0" fill="#F7ECF8" stroke="#E8E8E8"/>
+          <text x="450" y="102" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">B2  |  112 King St</text>
+          <rect x="440" y="109" width="280" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
+          <text x="450" y="124" fill="#27AE60" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">B3  |  34 Broomhill Rd  &#x2190; new branch, no staff needed</text>
+
+          <!-- FK arrow -->
+          <line x1="360" y1="80" x2="440" y2="80" stroke="#682773" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowP)"/>
+          <text x="385" y="72" text-anchor="middle" fill="#682773" font-size="10" font-weight="600" font-family="Source Sans 3, sans-serif">FK</text>
+          <defs><marker id="arrowP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#682773"/></marker></defs>
+
+          <!-- Annotation -->
+          <text x="390" y="170" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="12" font-family="Source Sans 3, sans-serif">&#x2713; Address stored once  &#x2713; Branch B3 added without staff  &#x2713; No redundancy</text>
+        </svg>
+        <div class="visual-caption">Figure 2: Splitting the combined table removes redundancy and prevents all three anomalies.</div>
+      </div>
+
+      <div class="warning">
+        <strong>Watch out:</strong> Some redundancy is expected and necessary. Foreign keys are copies of primary keys, and they need to be repeated in related tables. The redundancy we want to eliminate is non-key data being repeated, such as branch addresses appearing in every staff row.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 4: FIRST NORMAL FORM -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s4">
+    <div class="concept-header">
+      <div class="concept-num">4</div>
+      <h2>First Normal Form (1NF)</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>A table is in <span class="key-term">First Normal Form (1NF)</span> if every cell contains exactly one value. Two things violate this rule: <span class="key-term">multi-valued attributes</span> (several values crammed into one cell) and <span class="key-term">repeating groups</span> (a set of columns that repeat for multiple entries).</p>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-red">
+          <h4>Violates 1NF &#x2717;</h4>
+          <p>Department D001 has "x2745, x2746" in the PhoneNumbers column. That is two values in one cell.</p>
+        </div>
+        <div class="mini-card highlight-green">
+          <h4>Fixed for 1NF &#x2713;</h4>
+          <p>Create a separate DeptPhone table. Each row holds one department ID and one phone number.</p>
+        </div>
+      </div>
+
+      <p><strong>How to fix multi-valued attributes:</strong> move the multi-valued data into a new table, keeping a copy of the original primary key as a foreign key. For the Department/Phone example, you end up with a Department table (DeptId, DName) and a DeptPhone table (DeptId, PhoneNumber), where the primary key of DeptPhone is the combination of both columns.</p>
+
+      <p><strong>Repeating groups</strong> work the same way. In the lecture slides, an order can contain many parts. The part details (PartNo, Description, UnitPrice, Quantity) repeat for each order. You fix this by pulling the repeating group into its own table, with a copy of the original key (OrderNo) included. The new table then has a <span class="key-term">composite primary key</span> made up of OrderNo and PartNo together.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 180" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Before -->
+          <text x="180" y="16" text-anchor="middle" fill="#E74C3C" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">BEFORE (not in 1NF)</text>
+          <rect x="10" y="24" width="340" height="26" rx="4" fill="#E74C3C"/>
+          <text x="20" y="42" fill="white" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">OrderNo | SuppNo | PartNo | Descr | UnitPrice | Qty</text>
+          <rect x="10" y="50" width="340" height="22" fill="white" stroke="#E8E8E8"/>
+          <text x="20" y="65" fill="#2C3E50" font-size="10.5" font-family="Source Sans 3, sans-serif">1  |  S1  |  P1, P2, P3  |  Screw, Nut, Bolt  | ...</text>
+          <rect x="10" y="72" width="340" height="22" fill="#FDEDEC" stroke="#E8E8E8"/>
+          <text x="20" y="87" fill="#2C3E50" font-size="10.5" font-family="Source Sans 3, sans-serif">2  |  S2  |  P1, P3  |  Screw, Bolt  | ...</text>
+
+          <!-- Arrow -->
+          <text x="390" y="65" fill="#5D6D7E" font-size="22" font-family="Source Sans 3, sans-serif">&#x27A1;</text>
+
+          <!-- After -->
+          <text x="580" y="16" text-anchor="middle" fill="#27AE60" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">AFTER (in 1NF)</text>
+          <rect x="430" y="24" width="160" height="22" rx="4" fill="#27AE60"/>
+          <text x="440" y="40" fill="white" font-weight="600" font-size="10" font-family="Source Sans 3, sans-serif">Order: OrderNo | SuppNo</text>
+          <rect x="430" y="46" width="160" height="18" fill="white" stroke="#E8E8E8"/>
+          <text x="440" y="59" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  S1</text>
+          <rect x="430" y="64" width="160" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
+          <text x="440" y="77" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">2  |  S2</text>
+
+          <rect x="430" y="100" width="320" height="22" rx="4" fill="#27AE60"/>
+          <text x="440" y="116" fill="white" font-weight="600" font-size="10" font-family="Source Sans 3, sans-serif">OrderItem: OrderNo* | PartNo | Descr | UnitPrice | Qty</text>
+          <rect x="430" y="122" width="320" height="18" fill="white" stroke="#E8E8E8"/>
+          <text x="440" y="135" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P1  |  Screw  |  6p  |  3</text>
+          <rect x="430" y="140" width="320" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
+          <text x="440" y="153" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P2  |  Nut  |  7p  |  4</text>
+          <rect x="430" y="158" width="320" height="18" fill="white" stroke="#E8E8E8"/>
+          <text x="440" y="171" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P3  |  Bolt  |  10p  |  1</text>
+        </svg>
+        <div class="visual-caption">Figure 3: Removing repeating groups. Each cell now has exactly one value. The new table has a composite PK (OrderNo + PartNo).</div>
+      </div>
+
+      <div class="info">
+        <strong>Good to know:</strong> The composite key from this step becomes important in Section 6 (2NF). Partial dependencies can only exist when the primary key has more than one column.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 5: FUNCTIONAL DEPENDENCY -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s5">
+    <div class="concept-header">
+      <div class="concept-num">5</div>
+      <h2>Functional Dependency</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>Before you can understand 2NF and 3NF, you need to understand <span class="key-term">functional dependency</span>. This is the core concept behind the entire normalisation process.</p>
+
+      <p>A functional dependency is a rule that says: "if you know the value of column A, you can look up exactly one value of column B." We write this as <strong>A &#x2192; B</strong>, and read it as "A determines B" or "B is functionally dependent on A." The column on the left side of the arrow is called the <span class="key-term">determinant</span>.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Example that works -->
+          <text x="190" y="20" text-anchor="middle" fill="#27AE60" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">&#x2713; This works</text>
+          <rect x="40" y="30" width="120" height="36" rx="8" fill="#EAFAF1" stroke="#27AE60" stroke-width="2"/>
+          <text x="100" y="53" text-anchor="middle" fill="#1E8449" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">StudentID</text>
+          <line x1="165" y1="48" x2="210" y2="48" stroke="#27AE60" stroke-width="2.5" marker-end="url(#arrowG)"/>
+          <rect x="215" y="30" width="150" height="36" rx="8" fill="#EAFAF1" stroke="#27AE60" stroke-width="2"/>
+          <text x="290" y="53" text-anchor="middle" fill="#1E8449" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">Student_surname</text>
+          <text x="190" y="88" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">Each student ID belongs to one person,</text>
+          <text x="190" y="103" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">so you always get exactly one surname back.</text>
+
+          <!-- Example that doesn't work -->
+          <text x="570" y="20" text-anchor="middle" fill="#E74C3C" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">&#x2717; This does not work</text>
+          <rect x="430" y="30" width="150" height="36" rx="8" fill="#FDEDEC" stroke="#E74C3C" stroke-width="2"/>
+          <text x="505" y="53" text-anchor="middle" fill="#922B21" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">Student_surname</text>
+          <line x1="585" y1="48" x2="630" y2="48" stroke="#E74C3C" stroke-width="2.5" marker-end="url(#arrowR)"/>
+          <text x="608" y="42" fill="#E74C3C" font-size="16" font-family="Source Sans 3, sans-serif">&#x2215;</text>
+          <rect x="635" y="30" width="110" height="36" rx="8" fill="#FDEDEC" stroke="#E74C3C" stroke-width="2"/>
+          <text x="690" y="53" text-anchor="middle" fill="#922B21" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">StudentID</text>
+          <text x="570" y="88" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">Several students could share the surname "Smith",</text>
+          <text x="570" y="103" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">so you would not get one unique ID back.</text>
+
+          <defs>
+            <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#27AE60"/></marker>
+            <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#E74C3C"/></marker>
+          </defs>
+        </svg>
+        <div class="visual-caption">Figure 4: Functional dependency works in one direction. StudentID determines surname, but surname does not determine StudentID.</div>
+      </div>
+
+      <p>A primary key, by definition, determines every other column in its table. That is actually what makes it a valid primary key: if you know the key, you can find every other value in that row.</p>
+
+      <p>When the primary key is a <span class="key-term">composite key</span> (made up of two or more columns), we also need to think about <span class="key-term">full functional dependency</span>. This means that a non-key column depends on <em>all</em> of the key columns together, and would stop working if you removed any of them. For example, in an OrderItem table with the composite key (OrderNo, PartNo), the Quantity depends on both columns together. You need to know which order <em>and</em> which part to look up how many were ordered.</p>
+
+      <div class="example">
+        <strong>Example:</strong> In the Purchase_Item table, <code>OrderNo, PartNo &#x2192; Quantity</code> is a full functional dependency, because you need both OrderNo and PartNo to determine the quantity. However, <code>PartNo &#x2192; Description</code> is only a partial dependency on the composite key, because you only need PartNo to know the description. The OrderNo is irrelevant; a bolt is a bolt regardless of which order it appears in.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 6: SECOND NORMAL FORM -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s6">
+    <div class="concept-header">
+      <div class="concept-num">6</div>
+      <h2>Second Normal Form (2NF)</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>A table is in <span class="key-term">Second Normal Form (2NF)</span> if it is already in 1NF, and every non-key column is fully functionally dependent on the <em>entire</em> primary key. In other words, there are no <span class="key-term">partial dependencies</span>.</p>
+
+      <div class="danger">
+        <strong>Critical shortcut:</strong> If a table's primary key is a single column (not composite), the table is automatically in 2NF. Partial dependencies can only exist when the key has two or more columns, because "partial" means "depends on part of the key." A single-column key has no parts.
+      </div>
+
+      <p>Look at the Purchase_Item table from the lecture. The primary key is (OrderNo, PartNo). Quantity and ItemPrice depend on both columns together, so they are fine. But Description and UnitPrice depend only on PartNo. They are partially dependent on the composite key.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 195" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Combined table -->
+          <text x="375" y="16" text-anchor="middle" fill="#E74C3C" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">Purchase_Item (has partial dependencies)</text>
+          <rect x="80" y="24" width="600" height="24" rx="4" fill="#E74C3C"/>
+          <text x="90" y="41" fill="white" font-weight="600" font-size="10.5" font-family="Source Sans 3, sans-serif">OrderNo (PK) | PartNo (PK) | Descr | Quantity | UnitPrice | ItemPrice</text>
+          <rect x="80" y="48" width="600" height="18" fill="white" stroke="#E8E8E8"/>
+          <text x="90" y="61" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P1  |  Screw  |  3  |  6p  |  18p</text>
+
+          <!-- Arrow down -->
+          <text x="375" y="88" text-anchor="middle" fill="#5D6D7E" font-size="18" font-family="Source Sans 3, sans-serif">&#x2B07;</text>
+          <text x="375" y="105" text-anchor="middle" fill="#682773" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">Remove partial dependencies</text>
+
+          <!-- OrderItem table -->
+          <rect x="30" y="118" width="330" height="24" rx="4" fill="#27AE60"/>
+          <text x="40" y="135" fill="white" font-weight="600" font-size="10.5" font-family="Source Sans 3, sans-serif">OrderItem: OrderNo (PK) | PartNo (PK, FK) | Qty | ItemPrice</text>
+          <rect x="30" y="142" width="330" height="18" fill="white" stroke="#E8E8E8"/>
+          <text x="40" y="155" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P1  |  3  |  18p</text>
+          <rect x="30" y="160" width="330" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
+          <text x="40" y="173" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P2  |  4  |  28p</text>
+
+          <!-- Part table -->
+          <rect x="420" y="118" width="300" height="24" rx="4" fill="#27AE60"/>
+          <text x="430" y="135" fill="white" font-weight="600" font-size="10.5" font-family="Source Sans 3, sans-serif">Part: PartNo (PK) | Descr | UnitPrice</text>
+          <rect x="420" y="142" width="300" height="18" fill="white" stroke="#E8E8E8"/>
+          <text x="430" y="155" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">P1  |  Screw  |  6p</text>
+          <rect x="420" y="160" width="300" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
+          <text x="430" y="173" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">P2  |  Nut  |  7p</text>
+        </svg>
+        <div class="visual-caption">Figure 5: Splitting the table to remove partial dependencies. Descr and UnitPrice now live with their true determinant (PartNo).</div>
+      </div>
+
+      <p><strong>How to fix it:</strong> move the partially dependent columns into a new table, along with the part of the key they actually depend on. That part of the key becomes the primary key of the new table. It also stays in the original table as a foreign key, keeping the link between the two.</p>
+
+      <div class="warning">
+        <strong>Watch out:</strong> When you split a table, the determinant appears in <em>both</em> tables. In the new table it becomes the primary key. In the original table it stays as a foreign key. Do not remove it from the original; otherwise, you lose the connection between the tables.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 7: THIRD NORMAL FORM -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s7">
+    <div class="concept-header">
+      <div class="concept-num">7</div>
+      <h2>Third Normal Form (3NF)</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>A table is in <span class="key-term">Third Normal Form (3NF)</span> if it is already in 2NF, and no non-key column depends on another non-key column. Every non-key column must depend <em>directly</em> on the primary key. When a non-key column depends on the primary key only indirectly, through another non-key column, this is called a <span class="key-term">transitive dependency</span>.</p>
+
+      <p>Consider the Purchase Order table from the lecture. The primary key is OrderNo. OrderNo determines SuppNo (each order comes from one supplier), and SuppNo determines SuppName and SuppAddress (each supplier has one name and address). So we have a chain:</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 80" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;">
+          <rect x="60" y="18" width="120" height="40" rx="8" fill="#F7ECF8" stroke="#682773" stroke-width="2"/>
+          <text x="120" y="43" text-anchor="middle" fill="#4A1A52" font-weight="700" font-size="14" font-family="Source Sans 3, sans-serif">OrderNo</text>
+          <text x="120" y="12" text-anchor="middle" fill="#682773" font-size="10" font-weight="600" font-family="Source Sans 3, sans-serif">PK</text>
+
+          <line x1="185" y1="38" x2="260" y2="38" stroke="#682773" stroke-width="2.5" marker-end="url(#arrowT)"/>
+
+          <rect x="265" y="18" width="120" height="40" rx="8" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="325" y="43" text-anchor="middle" fill="#784212" font-weight="700" font-size="14" font-family="Source Sans 3, sans-serif">SuppNo</text>
+          <text x="325" y="12" text-anchor="middle" fill="#E67E22" font-size="10" font-weight="600" font-family="Source Sans 3, sans-serif">non-key</text>
+
+          <line x1="390" y1="38" x2="465" y2="38" stroke="#E67E22" stroke-width="2.5" marker-end="url(#arrowO)"/>
+
+          <rect x="470" y="10" width="210" height="56" rx="8" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="575" y="35" text-anchor="middle" fill="#784212" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">SuppName</text>
+          <text x="575" y="53" text-anchor="middle" fill="#784212" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">SuppAddress</text>
+
+          <defs>
+            <marker id="arrowT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#682773"/></marker>
+            <marker id="arrowO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#E67E22"/></marker>
+          </defs>
+        </svg>
+        <div class="visual-caption">Figure 6: A transitive dependency. SuppName depends on OrderNo, but only indirectly, through SuppNo.</div>
+      </div>
+
+      <p>This causes the same redundancy problem again. Supplier details get repeated for every order from that supplier. If the supplier changes address, you have to update every order row.</p>
+
+      <p><strong>How to fix it:</strong> create a new Supplier table with SuppNo as its primary key, containing SuppName and SuppAddress. Leave SuppNo in the Order table as a foreign key. Now each supplier's details are stored once.</p>
+
+      <div class="example">
+        <strong>Example:</strong> After the split, the Order table becomes <code>Order(OrderNo, SuppNo*, DelDate, OrderDate, TotalPrice)</code> and a new table <code>Supplier(SuppNo, SuppName, SuppAddress)</code> holds the supplier details. The asterisk on SuppNo marks it as a foreign key.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 8: PUTTING IT ALL TOGETHER -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s8">
+    <div class="concept-header">
+      <div class="concept-num">8</div>
+      <h2>Putting It All Together</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>Normalisation is a series of tests applied in order. Each step checks for one specific type of problem and fixes it by splitting a table. Here is the full process:</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 110" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- UNF -->
+          <rect x="10" y="12" width="130" height="56" rx="8" fill="#FDEDEC" stroke="#E74C3C" stroke-width="2"/>
+          <text x="75" y="34" text-anchor="middle" fill="#922B21" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">UNF / 0NF</text>
+          <text x="75" y="52" text-anchor="middle" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">Raw data</text>
+
+          <!-- Arrow -->
+          <line x1="145" y1="40" x2="175" y2="40" stroke="#5D6D7E" stroke-width="2" marker-end="url(#arrowS)"/>
+          <text x="160" y="64" text-anchor="middle" fill="#E74C3C" font-size="8.5" font-weight="600" font-family="Source Sans 3, sans-serif">Remove</text>
+          <text x="160" y="74" text-anchor="middle" fill="#E74C3C" font-size="8.5" font-weight="600" font-family="Source Sans 3, sans-serif">repeating groups</text>
+
+          <!-- 1NF -->
+          <rect x="180" y="12" width="130" height="56" rx="8" fill="#FEF5EC" stroke="#E67E22" stroke-width="2"/>
+          <text x="245" y="34" text-anchor="middle" fill="#784212" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">1NF</text>
+          <text x="245" y="52" text-anchor="middle" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">Single values only</text>
+
+          <!-- Arrow -->
+          <line x1="315" y1="40" x2="345" y2="40" stroke="#5D6D7E" stroke-width="2" marker-end="url(#arrowS)"/>
+          <text x="330" y="64" text-anchor="middle" fill="#E67E22" font-size="8.5" font-weight="600" font-family="Source Sans 3, sans-serif">Remove</text>
+          <text x="330" y="74" text-anchor="middle" fill="#E67E22" font-size="8.5" font-weight="600" font-family="Source Sans 3, sans-serif">partial deps</text>
+
+          <!-- 2NF -->
+          <rect x="350" y="12" width="130" height="56" rx="8" fill="#EBF5FB" stroke="#2980B9" stroke-width="2"/>
+          <text x="415" y="34" text-anchor="middle" fill="#1A5276" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">2NF</text>
+          <text x="415" y="52" text-anchor="middle" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">No partial deps</text>
+
+          <!-- Arrow -->
+          <line x1="485" y1="40" x2="515" y2="40" stroke="#5D6D7E" stroke-width="2" marker-end="url(#arrowS)"/>
+          <text x="500" y="64" text-anchor="middle" fill="#2980B9" font-size="8.5" font-weight="600" font-family="Source Sans 3, sans-serif">Remove</text>
+          <text x="500" y="74" text-anchor="middle" fill="#2980B9" font-size="8.5" font-weight="600" font-family="Source Sans 3, sans-serif">transitive deps</text>
+
+          <!-- 3NF -->
+          <rect x="520" y="12" width="130" height="56" rx="8" fill="#EAFAF1" stroke="#27AE60" stroke-width="2"/>
+          <text x="585" y="34" text-anchor="middle" fill="#1E8449" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">3NF</text>
+          <text x="585" y="52" text-anchor="middle" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">No transitive deps</text>
+
+          <!-- Checkmark -->
+          <text x="665" y="46" fill="#27AE60" font-size="28" font-family="Source Sans 3, sans-serif">&#x2713;</text>
+
+          <text x="380" y="100" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">Each step builds on the one before. A table in 3NF is also in 2NF and 1NF.</text>
+
+          <defs><marker id="arrowS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5D6D7E"/></marker></defs>
+        </svg>
+        <div class="visual-caption">Figure 7: The normalisation process from UNF to 3NF.</div>
+      </div>
+
+      <p>Sometimes a table is already well designed and does not need any changes. The lecture shows a StudentModule table with a composite key (StudentID, ModuleID) where CWGrade and ExamGrade are fully functionally dependent on the whole key, and there are no transitive dependencies. That table passes all three tests without any splitting. This is a perfectly valid outcome.</p>
+
+      <div class="info">
+        <strong>Good to know:</strong> If you designed your tables carefully from an ER diagram in week 3, normalisation may simply confirm that your design is correct. The ER-to-logical transformation rules naturally avoid many of the problems that normalisation catches.
+      </div>
+
+      <p><strong>How this connects to the lab:</strong> tutorial question 6 asks you to normalise the Spo-Tiff-Aye data from 0NF to 3NF. The lab then has you build that same database in SQL Server, creating tables with primary keys and adding foreign keys using <code>ALTER TABLE</code> statements. The tutorial is the "why" (designing the tables through normalisation), and the lab is the "how" (implementing them in SQL).</p>
+
+      <div class="warning">
+        <strong>Watch out:</strong> The lab mentions that the Features and Follow tables "are not in the ER Diagram." This is because those tables are linking tables that emerge during logical design. In the ER diagram, "a playlist contains many tracks" is shown as a line between Playlist and Track. The Features table <em>is</em> that many-to-many relationship, implemented as a table with foreign keys pointing to both Playlist and Track. Similarly, Follow is the linking table for the self-referencing User-follows-User relationship. These tables represent relationships, which is why they do not appear as separate entities in the conceptual model.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SUMMARY -->
+  <!-- ============================================================== -->
+  <div class="concept">
+    <div class="concept-header">
+      <div class="concept-num" style="background:var(--yellow);color:#7D6608;">&#x2713;</div>
+      <h2>Quick Reference Summary</h2>
+    </div>
+    <div class="concept-body">
+      <table>
+        <tr><th>Normal Form</th><th>What it checks for</th><th>How to fix it</th></tr>
+        <tr><td><strong>1NF</strong></td><td>Multi-valued cells or repeating groups</td><td>Move repeating data into a new table with the original PK as a FK</td></tr>
+        <tr><td><strong>2NF</strong></td><td>Partial dependencies (non-key column depends on part of a composite PK)</td><td>Move partially dependent columns to a new table; their determinant becomes the new PK</td></tr>
+        <tr><td><strong>3NF</strong></td><td>Transitive dependencies (non-key column depends on another non-key column)</td><td>Move transitively dependent columns to a new table; their determinant becomes the new PK</td></tr>
+      </table>
+
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Functional dependency</strong> (A &#x2192; B)</td><td>Knowing the value of A gives you exactly one value of B</td></tr>
+        <tr><td><strong>Determinant</strong></td><td>The column on the left side of the arrow (A in A &#x2192; B)</td></tr>
+        <tr><td><strong>Full functional dependency</strong></td><td>B depends on the entire composite key, and would stop working if you removed any part of it</td></tr>
+        <tr><td><strong>Partial dependency</strong></td><td>B depends on only part of a composite key (the 2NF problem)</td></tr>
+        <tr><td><strong>Transitive dependency</strong></td><td>A &#x2192; B &#x2192; C; C depends on the PK indirectly through another non-key column (the 3NF problem)</td></tr>
+        <tr><td><strong>Anomaly</strong></td><td>An error caused by redundancy: insertion, update, or deletion</td></tr>
+      </table>
+
+      <p style="margin-top:1.2rem; text-align:center; color:var(--text-light); font-size:0.93rem;">
+        You do not need to memorise all of this. Keep this page open during the lecture and lab as a reference.
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- TEXTBOOK READING GUIDE -->
+  <!-- ============================================================== -->
+  <div class="concept">
+    <div class="concept-header">
+      <div class="concept-num" style="background:var(--blue);color:white;">&#x1F4D6;</div>
+      <h2>Textbook Reading Guide</h2>
+    </div>
+    <div class="concept-body">
+      <p>This week's content corresponds to <strong>Chapter 14</strong> of the textbook (Connolly &amp; Begg, <em>Database Systems</em>). Here is a guide to which sections map to the lecture material.</p>
+
+      <table>
+        <tr><th>Topic</th><th>Lecture Slides</th><th>Textbook Section</th></tr>
+        <tr><td>Purpose of normalisation</td><td>Slides 2, 5</td><td>Section 14.1, 14.2</td></tr>
+        <tr><td>Redundancy and anomalies</td><td>Slides 6 to 10</td><td>Section 14.3</td></tr>
+        <tr><td>Functional dependency</td><td>Slides 17, 18</td><td>Section 14.4.1</td></tr>
+        <tr><td>Overview of the process</td><td>Slide 28</td><td>Section 14.5</td></tr>
+        <tr><td>First Normal Form</td><td>Slides 11 to 16</td><td>Section 14.6</td></tr>
+        <tr><td>Second Normal Form</td><td>Slides 19 to 22</td><td>Section 14.7</td></tr>
+        <tr><td>Third Normal Form</td><td>Slides 23 to 27</td><td>Section 14.8</td></tr>
+      </table>
+
+      <p>You can skip Section 14.4.2 (identifying FDs from sample data) and Section 14.9 (general definitions based on all candidate keys) for now. They provide useful background, but are not needed for the tutorial exercises.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  CM1120 Database Systems &middot; Week 4 Helper &middot; Robert Gordon University
+</footer>
+
+</body>
+</html>
