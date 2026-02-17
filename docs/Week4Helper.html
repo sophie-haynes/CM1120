@@ -384,7 +384,7 @@
       <p>Normalisation can also be used on its own as a "bottom-up" design technique, where you start from raw data (such as a form or spreadsheet) and work towards well-structured tables. In this module, you will mostly use it as a validation step after creating your logical model.</p>
 
       <div class="info">
-        <strong>Good to know:</strong> The textbook (Section 14.2) describes both approaches. For the coursework, think of normalisation as quality control for your tables.
+        <strong>Reference:</strong> The textbook (Section 14.2) describes both approaches. For the coursework, think of normalisation as quality control for your tables.
       </div>
 
     </div>
@@ -400,7 +400,7 @@
     </div>
     <div class="concept-body">
 
-      <p>Imagine you store staff and branch information together in a single table. Every row for a staff member also includes the full address of the branch they work at. If three people work at Branch B1, the address "42 Victoria Rd" appears three times. This repeated information is called <span class="key-term">data redundancy</span>.</p>
+      <p>Imagine you store staff and branch information together in a single table. Every row for a staff member also includes the full address of the branch they work at. If three people work at Branch B1, the address <em>42 Victoria Rd</em> appears three times. This repeated information is called <span class="key-term">data redundancy</span>.</p>
 
       <table>
         <tr><th>StaffId</th><th>Name</th><th>Staff Address</th><th>Branch</th><th>Branch Address</th></tr>
@@ -429,15 +429,15 @@
       <p>An <span class="key-term">anomaly</span> is a situation where data becomes inconsistent, or where you lose information that you did not intend to lose. Anomalies happen because a table is trying to store information about more than one topic at the same time.</p>
 
       <div class="grid-3">
-        <div class="mini-card highlight-orange">
+        <div class="mini-card highlight-blue">
           <h4>Insertion Anomaly</h4>
           <p>You cannot add a new branch until it has staff, because the primary key (StaffId) cannot be NULL.</p>
         </div>
-        <div class="mini-card highlight-red">
+        <div class="mini-card highlight-orange">
           <h4>Update Anomaly</h4>
           <p>Changing a branch address means updating every row for every staff member at that branch. Miss one and the data is inconsistent.</p>
         </div>
-        <div class="mini-card highlight-blue">
+        <div class="mini-card highlight-red">
           <h4>Deletion Anomaly</h4>
           <p>If the last staff member at a branch leaves and you delete their row, you also lose the branch address.</p>
         </div>
@@ -451,13 +451,13 @@
           <rect x="20" y="10" width="340" height="30" rx="6" fill="#682773"/>
           <text x="30" y="30" fill="white" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">Staff</text>
           <rect x="20" y="40" width="340" height="25" rx="0" fill="#EBF5FB" stroke="#E8E8E8"/>
-          <text x="30" y="57" fill="#2C3E50" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">StaffId (PK)  |  Name  |  Staff Address  |  Branch# (FK)</text>
+          <text x="30" y="57" fill="#2C3E50" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">StaffId (PK) | Name             | Staff Address               | Branch# (FK)</text>
           <rect x="20" y="65" width="340" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
-          <text x="30" y="80" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S1  |  Fred Bloggs  |  23 Acacia Gardens  |  B1</text>
+          <text x="30" y="80" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S1                     | Fred Bloggs | 23 Acacia Gardens     | B1</text>
           <rect x="20" y="87" width="340" height="22" rx="0" fill="#F7ECF8" stroke="#E8E8E8"/>
-          <text x="30" y="102" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S2  |  Bill Sykes  |  17 Mafeking Terrace  |  B1</text>
+          <text x="30" y="102" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S2                     | Bill Sykes      | 17 Mafeking Terrace | B1</text>
           <rect x="20" y="109" width="340" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
-          <text x="30" y="124" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S4  |  John Doe  |  5 Mornington Cres  |  B2</text>
+          <text x="30" y="124" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">S4                     | John Doe      | 5 Mornington Cres     | B2</text>
 
           <!-- Branch table -->
           <rect x="440" y="10" width="280" height="30" rx="6" fill="#682773"/>
@@ -465,11 +465,11 @@
           <rect x="440" y="40" width="280" height="25" rx="0" fill="#EBF5FB" stroke="#E8E8E8"/>
           <text x="450" y="57" fill="#2C3E50" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">Branch# (PK)  |  Address</text>
           <rect x="440" y="65" width="280" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
-          <text x="450" y="80" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">B1  |  42 Victoria Rd</text>
+          <text x="450" y="80" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">B1                        |  42 Victoria Rd</text>
           <rect x="440" y="87" width="280" height="22" rx="0" fill="#F7ECF8" stroke="#E8E8E8"/>
-          <text x="450" y="102" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">B2  |  112 King St</text>
+          <text x="450" y="102" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">B2                        |  112 King St</text>
           <rect x="440" y="109" width="280" height="22" rx="0" fill="white" stroke="#E8E8E8"/>
-          <text x="450" y="124" fill="#27AE60" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">B3  |  34 Broomhill Rd  &#x2190; new branch, no staff needed</text>
+          <text x="450" y="124" fill="#27AE60" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">B3                        |  34 Broomhill Rd  (new branch, no staff needed)</text>
 
           <!-- FK arrow -->
           <line x1="360" y1="80" x2="440" y2="80" stroke="#682773" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowP)"/>
@@ -483,7 +483,7 @@
       </div>
 
       <div class="warning">
-        <strong>Watch out:</strong> Some redundancy is expected and necessary. Foreign keys are copies of primary keys, and they need to be repeated in related tables. The redundancy we want to eliminate is non-key data being repeated, such as branch addresses appearing in every staff row.
+        <strong>Careful:</strong> Some redundancy is expected and necessary. Foreign keys are copies of primary keys, and they need to be repeated in related tables. The redundancy we want to eliminate is non-key data being repeated, such as branch addresses appearing in every staff row.
       </div>
 
     </div>
@@ -521,11 +521,11 @@
           <!-- Before -->
           <text x="180" y="16" text-anchor="middle" fill="#E74C3C" font-weight="700" font-size="12" font-family="Source Sans 3, sans-serif">BEFORE (not in 1NF)</text>
           <rect x="10" y="24" width="340" height="26" rx="4" fill="#E74C3C"/>
-          <text x="20" y="42" fill="white" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">OrderNo | SuppNo | PartNo | Descr | UnitPrice | Qty</text>
+          <text x="20" y="42" fill="white" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">OrderNo | SuppNo | PartNo     | Descr                     | UnitPrice | Qty</text>
           <rect x="10" y="50" width="340" height="22" fill="white" stroke="#E8E8E8"/>
-          <text x="20" y="65" fill="#2C3E50" font-size="10.5" font-family="Source Sans 3, sans-serif">1  |  S1  |  P1, P2, P3  |  Screw, Nut, Bolt  | ...</text>
+          <text x="20" y="65" fill="#2C3E50" font-size="10.5" font-family="Source Sans 3, sans-serif">                 1  |  S1              |  P1, P2, P3  |  Screw, Nut, Bolt  | ...</text>
           <rect x="10" y="72" width="340" height="22" fill="#FDEDEC" stroke="#E8E8E8"/>
-          <text x="20" y="87" fill="#2C3E50" font-size="10.5" font-family="Source Sans 3, sans-serif">2  |  S2  |  P1, P3  |  Screw, Bolt  | ...</text>
+          <text x="20" y="87" fill="#2C3E50" font-size="10.5" font-family="Source Sans 3, sans-serif">                 2  |  S2              |  P1, P3         |  Screw, Bolt           | ...</text>
 
           <!-- Arrow -->
           <text x="390" y="65" fill="#5D6D7E" font-size="22" font-family="Source Sans 3, sans-serif">&#x27A1;</text>
@@ -535,24 +535,24 @@
           <rect x="430" y="24" width="160" height="22" rx="4" fill="#27AE60"/>
           <text x="440" y="40" fill="white" font-weight="600" font-size="10" font-family="Source Sans 3, sans-serif">Order: OrderNo | SuppNo</text>
           <rect x="430" y="46" width="160" height="18" fill="white" stroke="#E8E8E8"/>
-          <text x="440" y="59" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  S1</text>
+          <text x="440" y="59" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                               1 | S1</text>
           <rect x="430" y="64" width="160" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
-          <text x="440" y="77" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">2  |  S2</text>
+          <text x="440" y="77" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                               2 | S2</text>
 
           <rect x="430" y="100" width="320" height="22" rx="4" fill="#27AE60"/>
-          <text x="440" y="116" fill="white" font-weight="600" font-size="10" font-family="Source Sans 3, sans-serif">OrderItem: OrderNo* | PartNo | Descr | UnitPrice | Qty</text>
+          <text x="440" y="116" fill="white" font-weight="600" font-size="10" font-family="Source Sans 3, sans-serif">OrderItem: OrderNo* | PartNo | Descr  | UnitPrice | Qty</text>
           <rect x="430" y="122" width="320" height="18" fill="white" stroke="#E8E8E8"/>
-          <text x="440" y="135" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P1  |  Screw  |  6p  |  3</text>
+          <text x="440" y="135" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                                          1  |  P1            |  Screw  |  6p                |  3</text>
           <rect x="430" y="140" width="320" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
-          <text x="440" y="153" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P2  |  Nut  |  7p  |  4</text>
+          <text x="440" y="153" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                                          1  |  P2            |  Nut      |  7p                |  4</text>
           <rect x="430" y="158" width="320" height="18" fill="white" stroke="#E8E8E8"/>
-          <text x="440" y="171" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P3  |  Bolt  |  10p  |  1</text>
+          <text x="440" y="171" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                                          1  |  P3            |  Bolt     |  10p              |  1</text>
         </svg>
         <div class="visual-caption">Figure 3: Removing repeating groups. Each cell now has exactly one value. The new table has a composite PK (OrderNo + PartNo).</div>
       </div>
 
       <div class="info">
-        <strong>Good to know:</strong> The composite key from this step becomes important in Section 6 (2NF). Partial dependencies can only exist when the primary key has more than one column.
+        <strong>Notice:</strong> The composite key from this step becomes important in Section 6 (2NF). Partial dependencies can only exist when the primary key has more than one column.
       </div>
 
     </div>
@@ -607,7 +607,7 @@
 
       <p>When the primary key is a <span class="key-term">composite key</span> (made up of two or more columns), we also need to think about <span class="key-term">full functional dependency</span>. This means that a non-key column depends on <em>all</em> of the key columns together, and would stop working if you removed any of them. For example, in an OrderItem table with the composite key (OrderNo, PartNo), the Quantity depends on both columns together. You need to know which order <em>and</em> which part to look up how many were ordered.</p>
 
-      <div class="example">
+      <div class="info">
         <strong>Example:</strong> In the Purchase_Item table, <code>OrderNo, PartNo &#x2192; Quantity</code> is a full functional dependency, because you need both OrderNo and PartNo to determine the quantity. However, <code>PartNo &#x2192; Description</code> is only a partial dependency on the composite key, because you only need PartNo to know the description. The OrderNo is irrelevant; a bolt is a bolt regardless of which order it appears in.
       </div>
 
@@ -626,8 +626,8 @@
 
       <p>A table is in <span class="key-term">Second Normal Form (2NF)</span> if it is already in 1NF, and every non-key column is fully functionally dependent on the <em>entire</em> primary key. In other words, there are no <span class="key-term">partial dependencies</span>.</p>
 
-      <div class="danger">
-        <strong>Critical shortcut:</strong> If a table's primary key is a single column (not composite), the table is automatically in 2NF. Partial dependencies can only exist when the key has two or more columns, because "partial" means "depends on part of the key." A single-column key has no parts.
+      <div class="example">
+        <strong>Notice:</strong> If a table's primary key is a single column (not composite), the table is <em>automatically in 2NF</em>. Partial dependencies can only exist when the key has two or more columns, because "partial" means "depends on part of the key." A single-column key has no parts.
       </div>
 
       <p>Look at the Purchase_Item table from the lecture. The primary key is (OrderNo, PartNo). Quantity and ItemPrice depend on both columns together, so they are fine. But Description and UnitPrice depend only on PartNo. They are partially dependent on the composite key.</p>
@@ -639,7 +639,7 @@
           <rect x="80" y="24" width="600" height="24" rx="4" fill="#E74C3C"/>
           <text x="90" y="41" fill="white" font-weight="600" font-size="10.5" font-family="Source Sans 3, sans-serif">OrderNo (PK) | PartNo (PK) | Descr | Quantity | UnitPrice | ItemPrice</text>
           <rect x="80" y="48" width="600" height="18" fill="white" stroke="#E8E8E8"/>
-          <text x="90" y="61" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P1  |  Screw  |  3  |  6p  |  18p</text>
+          <text x="90" y="61" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                            1  |  P1                      |  Screw  |  3                   |  6p                 |  18p</text>
 
           <!-- Arrow down -->
           <text x="375" y="88" text-anchor="middle" fill="#5D6D7E" font-size="18" font-family="Source Sans 3, sans-serif">&#x2B07;</text>
@@ -649,17 +649,17 @@
           <rect x="30" y="118" width="330" height="24" rx="4" fill="#27AE60"/>
           <text x="40" y="135" fill="white" font-weight="600" font-size="10.5" font-family="Source Sans 3, sans-serif">OrderItem: OrderNo (PK) | PartNo (PK, FK) | Qty | ItemPrice</text>
           <rect x="30" y="142" width="330" height="18" fill="white" stroke="#E8E8E8"/>
-          <text x="40" y="155" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P1  |  3  |  18p</text>
+          <text x="40" y="155" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                                                      1  |  P1                              |  3       |  18p</text>
           <rect x="30" y="160" width="330" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
-          <text x="40" y="173" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">1  |  P2  |  4  |  28p</text>
+          <text x="40" y="173" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                                                      1  |  P2                              |  4       |  28p</text>
 
           <!-- Part table -->
           <rect x="420" y="118" width="300" height="24" rx="4" fill="#27AE60"/>
           <text x="430" y="135" fill="white" font-weight="600" font-size="10.5" font-family="Source Sans 3, sans-serif">Part: PartNo (PK) | Descr | UnitPrice</text>
           <rect x="420" y="142" width="300" height="18" fill="white" stroke="#E8E8E8"/>
-          <text x="430" y="155" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">P1  |  Screw  |  6p</text>
+          <text x="430" y="155" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                                 P1  |  Screw  |  6p</text>
           <rect x="420" y="160" width="300" height="18" fill="#EAFAF1" stroke="#E8E8E8"/>
-          <text x="430" y="173" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">P2  |  Nut  |  7p</text>
+          <text x="430" y="173" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">                                 P2  |  Nut      |  7p</text>
         </svg>
         <div class="visual-caption">Figure 5: Splitting the table to remove partial dependencies. Descr and UnitPrice now live with their true determinant (PartNo).</div>
       </div>
@@ -667,7 +667,7 @@
       <p><strong>How to fix it:</strong> move the partially dependent columns into a new table, along with the part of the key they actually depend on. That part of the key becomes the primary key of the new table. It also stays in the original table as a foreign key, keeping the link between the two.</p>
 
       <div class="warning">
-        <strong>Watch out:</strong> When you split a table, the determinant appears in <em>both</em> tables. In the new table it becomes the primary key. In the original table it stays as a foreign key. Do not remove it from the original; otherwise, you lose the connection between the tables.
+        <strong>Careful:</strong> When you split a table, the determinant appears in <em>both</em> tables. In the new table it becomes the primary key. In the original table it stays as a foreign key. Do not remove it from the original; otherwise, you lose the connection between the tables.
       </div>
 
     </div>
@@ -717,7 +717,7 @@
 
       <p><strong>How to fix it:</strong> create a new Supplier table with SuppNo as its primary key, containing SuppName and SuppAddress. Leave SuppNo in the Order table as a foreign key. Now each supplier's details are stored once.</p>
 
-      <div class="example">
+      <div class="info">
         <strong>Example:</strong> After the split, the Order table becomes <code>Order(OrderNo, SuppNo*, DelDate, OrderDate, TotalPrice)</code> and a new table <code>Supplier(SuppNo, SuppName, SuppAddress)</code> holds the supplier details. The asterisk on SuppNo marks it as a foreign key.
       </div>
 
@@ -792,7 +792,7 @@
       <p><strong>How this connects to the lab:</strong> tutorial question 6 asks you to normalise the Spo-Tiff-Aye data from 0NF to 3NF. The lab then has you build that same database in SQL Server, creating tables with primary keys and adding foreign keys using <code>ALTER TABLE</code> statements. The tutorial is the "why" (designing the tables through normalisation), and the lab is the "how" (implementing them in SQL).</p>
 
       <div class="warning">
-        <strong>Watch out:</strong> The lab mentions that the Features and Follow tables "are not in the ER Diagram." This is because those tables are linking tables that emerge during logical design. In the ER diagram, "a playlist contains many tracks" is shown as a line between Playlist and Track. The Features table <em>is</em> that many-to-many relationship, implemented as a table with foreign keys pointing to both Playlist and Track. Similarly, Follow is the linking table for the self-referencing User-follows-User relationship. These tables represent relationships, which is why they do not appear as separate entities in the conceptual model.
+        <strong>Careful:</strong> The lab mentions that the Features and Follow tables "are not in the ER Diagram." This is because those tables are linking tables that emerge during logical design. In the ER diagram, "a playlist contains many tracks" is shown as a line between Playlist and Track. The Features table <em>is</em> that many-to-many relationship, implemented as a table with foreign keys pointing to both Playlist and Track. Similarly, Follow is the linking table for the self-referencing User-follows-User relationship. These tables represent relationships, which is why they do not appear as separate entities in the conceptual model.
       </div>
     </div>
   </div>
