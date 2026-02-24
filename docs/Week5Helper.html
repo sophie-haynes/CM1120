@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helper, CM1120 Database Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #682773;
+    --purple-light: #F7ECF8;
+    --purple-mid: #9B59B6;
+    --purple-dark: #4A1A52;
+    --orange: #E67E22;
+    --orange-light: #FEF5EC;
+    --blue: #2980B9;
+    --blue-light: #EBF5FB;
+    --green: #27AE60;
+    --green-light: #EAFAF1;
+    --red: #E74C3C;
+    --red-light: #FDEDEC;
+    --yellow: #F1C40F;
+    --yellow-light: #FEF9E7;
+    --text: #2C3E50;
+    --text-light: #5D6D7E;
+    --bg: #FAFBFC;
+    --card-bg: #FFFFFF;
+    --border: #E8E8E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: white;
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+  }
+  header .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #f0e0f4;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3em 1em;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  header p {
+    font-size: 1.05rem;
+    opacity: 0.88;
+    max-width: 640px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .intro-box {
+    background: var(--purple-light);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 8px 8px 0;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.97rem;
+  }
+  .intro-box strong { color: var(--purple); }
+
+  .toc {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--purple);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem 1.5rem;
+  }
+  .toc a {
+    color: var(--purple);
+    text-decoration: none;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0;
+  }
+  .toc a:hover { text-decoration: underline; }
+  .toc a .num {
+    background: var(--purple-light);
+    color: var(--purple);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .concept {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .concept-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--purple-light);
+    border-bottom: 1px solid #EDE0F0;
+  }
+  .concept-num {
+    width: 36px; height: 36px;
+    background: var(--purple);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .concept-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+  }
+  .concept-body {
+    padding: 1.5rem;
+  }
+  .concept-body p {
+    margin-bottom: 1rem;
+  }
+
+  .visual-panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    text-align: center;
+  }
+  .visual-panel svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .visual-caption {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.6rem;
+    font-style: italic;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 650px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .mini-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .mini-card h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--purple);
+  }
+  .mini-card p {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+  }
+  .mini-card.highlight-blue   { border-color: var(--blue);   background: var(--blue-light);   }
+  .mini-card.highlight-blue h4   { color: var(--blue);   }
+  .mini-card.highlight-orange { border-color: var(--orange); background: var(--orange-light); }
+  .mini-card.highlight-orange h4 { color: var(--orange); }
+  .mini-card.highlight-green  { border-color: var(--green);  background: var(--green-light);  }
+  .mini-card.highlight-green h4  { color: var(--green);  }
+  .mini-card.highlight-red    { border-color: var(--red);    background: var(--red-light);    }
+  .mini-card.highlight-red h4    { color: var(--red);    }
+
+  .example {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .example strong { color: #1E8449; }
+
+  .warning {
+    background: var(--orange-light);
+    border-left: 4px solid var(--orange);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .warning strong { color: #B7560F; }
+
+  .info {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .info strong { color: #1A5276; }
+
+  .danger {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+  .danger strong { color: #922B21; }
+
+  .key-term {
+    display: inline-block;
+    background: var(--purple-light);
+    color: var(--purple-dark);
+    font-weight: 600;
+    padding: 0.1em 0.45em;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  code {
+    font-family: 'Source Code Pro', monospace;
+    background: #F0EDF2;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--purple-dark);
+  }
+
+  pre {
+    font-family: 'Source Code Pro', monospace;
+    background: #2C2040;
+    color: #E8DFF0;
+    padding: 1.1rem 1.3rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 0.8rem 0 1rem;
+  }
+  pre .kw { color: #C39BD3; font-weight: 600; }
+  pre .str { color: #7DCEA0; }
+  pre .cm { color: #7F8C8D; font-style: italic; }
+  pre .fn { color: #F5B041; }
+  pre .num { color: #85C1E9; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  th {
+    background: var(--purple);
+    color: white;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--purple-light); }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Quiz styles */
+  .quiz-question {
+    background: var(--yellow-light);
+    border: 2px solid var(--yellow);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+  }
+  .quiz-question h4 {
+    color: #7D6608;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .quiz-option {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+  .quiz-option:hover {
+    border-color: var(--purple);
+    background: var(--purple-light);
+  }
+  .quiz-option.correct {
+    background: var(--green-light);
+    border-color: var(--green);
+  }
+  .quiz-option.incorrect {
+    background: var(--red-light);
+    border-color: var(--red);
+  }
+  .quiz-reveal {
+    display: none;
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.88rem;
+  }
+  .quiz-reveal.show {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">CM1120 &middot; Week 5</div>
+  <h1>SQL Queries</h1>
+  <p>How to create, modify, and query database tables using SQL. This covers the two main parts of the SQL language: defining your tables and getting data in and out of them.</p>
+</header>
+
+<div class="container">
+
+  <div class="intro-box">
+    <strong>How to use this document:</strong> This page walks through the SQL covered in the Week 5 lecture. The interactive quiz at the end will help you check your understanding. Textbook reference: Connolly and Begg, Chapters 6 &amp; 7.
+  </div>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <div class="toc-grid">
+      <a href="#s1"><span class="num">1</span> The Big Picture: DDL vs DML</a>
+      <a href="#s2"><span class="num">2</span> Creating Tables</a>
+      <a href="#s3"><span class="num">3</span> Constraints</a>
+      <a href="#s4"><span class="num">4</span> Altering and Dropping Tables</a>
+      <a href="#s5"><span class="num">5</span> Adding Data with INSERT</a>
+      <a href="#s6"><span class="num">6</span> Retrieving Data with SELECT</a>
+      <a href="#s7"><span class="num">7</span> Extending SELECT</a>
+      <a href="#s8"><span class="num">8</span> Aggregate Functions and Calculations</a>
+      <a href="#s9"><span class="num">9</span> Check Your Understanding</a>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 1: The Big Picture -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s1">
+    <div class="concept-header">
+      <div class="concept-num">1</div>
+      <h2>The Big Picture: DDL vs DML</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>A <span class="key-term">Database Management System (DBMS)</span> is the software that lets you define, create, maintain, and control access to a database. When you interact with a DBMS, you use a language called <span class="key-term">SQL</span> (Structured Query Language). SQL has two main halves, and this week covers both of them.</p>
+
+      <p>The first half is the <span class="key-term">Data Definition Language (DDL)</span>. This is the "building" side of SQL. You use DDL to create your tables, set up the rules they must follow, change their structure, or remove them entirely. Think of DDL as the architect's blueprint: it defines what your database looks like before any data goes in.</p>
+
+      <p>The second half is the <span class="key-term">Data Manipulation Language (DML)</span>. This is the "doing" side. Once your tables exist, you use DML to put data in, pull data out, change data, or delete data. The most important DML command is <code>SELECT</code>, which is how you ask questions of your database.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Title -->
+          <rect x="250" y="10" width="260" height="44" rx="22" fill="#682773"/>
+          <text x="380" y="38" text-anchor="middle" fill="white" font-weight="700" font-size="16" font-family="Source Sans 3, sans-serif">SQL Language</text>
+
+          <!-- Connecting lines -->
+          <line x1="310" y1="54" x2="190" y2="90" stroke="#9B59B6" stroke-width="2"/>
+          <line x1="450" y1="54" x2="570" y2="90" stroke="#9B59B6" stroke-width="2"/>
+
+          <!-- DDL Box -->
+          <rect x="60" y="90" width="260" height="44" rx="10" fill="#2980B9"/>
+          <text x="190" y="118" text-anchor="middle" fill="white" font-weight="700" font-size="14" font-family="Source Sans 3, sans-serif">DDL (Definition Language)</text>
+          <text x="190" y="155" text-anchor="middle" fill="#5D6D7E" font-size="12" font-family="Source Sans 3, sans-serif">"Build and manage the structure"</text>
+
+          <!-- DDL children -->
+          <line x1="110" y1="134" x2="80" y2="175" stroke="#2980B9" stroke-width="1.5"/>
+          <line x1="190" y1="134" x2="190" y2="175" stroke="#2980B9" stroke-width="1.5"/>
+          <line x1="270" y1="134" x2="300" y2="175" stroke="#2980B9" stroke-width="1.5"/>
+
+          <rect x="20" y="175" width="120" height="34" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="1.5"/>
+          <text x="80" y="197" text-anchor="middle" fill="#2980B9" font-weight="600" font-size="12" font-family="Source Code Pro, monospace">CREATE TABLE</text>
+
+          <rect x="150" y="175" width="80" height="34" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="1.5"/>
+          <text x="190" y="197" text-anchor="middle" fill="#2980B9" font-weight="600" font-size="12" font-family="Source Code Pro, monospace">ALTER</text>
+
+          <rect x="250" y="175" width="80" height="34" rx="6" fill="#EBF5FB" stroke="#2980B9" stroke-width="1.5"/>
+          <text x="290" y="197" text-anchor="middle" fill="#2980B9" font-weight="600" font-size="12" font-family="Source Code Pro, monospace">DROP</text>
+
+          <!-- DML Box -->
+          <rect x="440" y="90" width="260" height="44" rx="10" fill="#27AE60"/>
+          <text x="570" y="118" text-anchor="middle" fill="white" font-weight="700" font-size="14" font-family="Source Sans 3, sans-serif">DML (Manipulation Language)</text>
+          <text x="570" y="155" text-anchor="middle" fill="#5D6D7E" font-size="12" font-family="Source Sans 3, sans-serif">"Work with the data itself"</text>
+
+          <!-- DML children -->
+          <line x1="490" y1="134" x2="470" y2="175" stroke="#27AE60" stroke-width="1.5"/>
+          <line x1="540" y1="134" x2="540" y2="175" stroke="#27AE60" stroke-width="1.5"/>
+          <line x1="600" y1="134" x2="610" y2="175" stroke="#27AE60" stroke-width="1.5"/>
+          <line x1="650" y1="134" x2="680" y2="175" stroke="#27AE60" stroke-width="1.5"/>
+
+          <rect x="420" y="175" width="80" height="34" rx="6" fill="#EAFAF1" stroke="#27AE60" stroke-width="1.5"/>
+          <text x="460" y="197" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="12" font-family="Source Code Pro, monospace">INSERT</text>
+
+          <rect x="510" y="175" width="80" height="34" rx="6" fill="#EAFAF1" stroke="#27AE60" stroke-width="1.5"/>
+          <text x="550" y="197" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="12" font-family="Source Code Pro, monospace">SELECT</text>
+
+          <rect x="600" y="175" width="80" height="34" rx="6" fill="#EAFAF1" stroke="#27AE60" stroke-width="1.5"/>
+          <text x="640" y="197" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="12" font-family="Source Code Pro, monospace">UPDATE</text>
+
+          <rect x="690" y="175" width="70" height="34" rx="6" fill="#EAFAF1" stroke="#27AE60" stroke-width="1.5"/>
+          <text x="725" y="197" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="12" font-family="Source Code Pro, monospace">DELETE</text>
+
+          <!-- Highlight box around SELECT -->
+          <rect x="506" y="171" width="88" height="42" rx="8" fill="none" stroke="#E67E22" stroke-width="2.5" stroke-dasharray="5,3"/>
+          <text x="550" y="235" text-anchor="middle" fill="#E67E22" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">Main focus this week</text>
+        </svg>
+        <div class="visual-caption">Figure 1: The two halves of SQL. This week covers DDL basics plus DML, with a big focus on SELECT queries.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 2: Creating Tables -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s2">
+    <div class="concept-header">
+      <div class="concept-num">2</div>
+      <h2>Creating Tables with CREATE TABLE</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>Before you can store any data, you need to create a table to hold it. The <code>CREATE TABLE</code> statement tells the database: "Make me a new table with these columns, and each column stores this type of data."</p>
+
+      <p>The basic pattern looks like this:</p>
+
+      <pre><span class="kw">CREATE TABLE</span> TableName (
+    column1    data_type,
+    column2    data_type,
+    column3    data_type
+);</pre>
+
+      <p>Every column needs a <span class="key-term">data type</span>, which tells the database what kind of value it will hold. Here are the common ones you will use.</p>
+
+      <table>
+        <tr><th>Data Type</th><th>What It Stores</th><th>Example</th></tr>
+        <tr><td><code>NCHAR(size)</code></td><td>A fixed-length text string. Always exactly that many characters long.</td><td><code>NCHAR(4)</code> stores exactly 4 characters, like <code>'D010'</code></td></tr>
+        <tr><td><code>NVARCHAR(size)</code></td><td>A variable-length text string. Can be shorter than the maximum.</td><td><code>NVARCHAR(20)</code> stores up to 20 characters, like <code>'Smith'</code></td></tr>
+        <tr><td><code>INT</code></td><td>A whole number (no decimal places).</td><td><code>7</code>, <code>12</code>, <code>0</code></td></tr>
+        <tr><td><code>DECIMAL</code></td><td>A number that can have decimal places.</td><td><code>15.75</code>, <code>100.0</code></td></tr>
+        <tr><td><code>DATETIME</code></td><td>A date, and optionally a time.</td><td><code>'2023/06/12'</code> or <code>'2023/06/12 12:30:00'</code></td></tr>
+        <tr><td><code>MONEY</code></td><td>A currency value.</td><td><code>450.00</code></td></tr>
+        <tr><td><code>BIT</code></td><td>A yes/no value (0 or 1).</td><td><code>0</code> or <code>1</code></td></tr>
+      </table>
+
+      <div class="example">
+        <strong>Example:</strong> Here is a simple table to store driver information. Each driver has an ID (fixed at 4 characters), a title, a name, and an address.
+        <pre><span class="kw">CREATE TABLE</span> Driver (
+    driverid    <span class="fn">NCHAR</span>(4),
+    title       <span class="fn">NVARCHAR</span>(4),
+    name        <span class="fn">NVARCHAR</span>(20),
+    address     <span class="fn">NVARCHAR</span>(40)
+);</pre>
+      </div>
+
+      <div class="info">
+        <strong>NCHAR vs NVARCHAR:</strong> Use <code>NCHAR</code> when the value is always the same length, like an ID code that is always 4 characters. Use <code>NVARCHAR</code> when values vary in length, like names or addresses. The "N" at the start means these support international (Unicode) characters.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 3: Constraints -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s3">
+    <div class="concept-header">
+      <div class="concept-num">3</div>
+      <h2>Constraints: Rules Your Data Must Follow</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>When you create a table, you can also add <span class="key-term">constraints</span>. These are rules that the database will enforce automatically. If someone tries to insert data that breaks a constraint, the database will refuse it. This is how the database protects itself from bad data.</p>
+
+      <p>There are several kinds of constraints, and they fall into three categories you have already met in earlier weeks: entity integrity, referential integrity, and domain integrity.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Column constraint: NOT NULL -->
+          <rect x="10" y="10" width="230" height="105" rx="10" fill="#EBF5FB" stroke="#2980B9" stroke-width="1.5"/>
+          <text x="125" y="35" text-anchor="middle" fill="#2980B9" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">NOT NULL</text>
+          <text x="125" y="55" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">"This column must have a value."</text>
+          <text x="125" y="80" text-anchor="middle" fill="#4A1A52" font-size="11" font-family="Source Code Pro, monospace">name NVARCHAR(20) NOT NULL</text>
+          <text x="125" y="105" text-anchor="middle" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">Prevents empty/missing values</text>
+
+          <!-- Primary Key -->
+          <rect x="265" y="10" width="230" height="105" rx="10" fill="#EAFAF1" stroke="#27AE60" stroke-width="1.5"/>
+          <text x="380" y="35" text-anchor="middle" fill="#27AE60" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">PRIMARY KEY</text>
+          <text x="380" y="55" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">"Uniquely identifies each row."</text>
+          <text x="380" y="80" text-anchor="middle" fill="#4A1A52" font-size="10" font-family="Source Code Pro, monospace">CONSTRAINT pk_Driver</text>
+          <text x="380" y="95" text-anchor="middle" fill="#4A1A52" font-size="10" font-family="Source Code Pro, monospace">PRIMARY KEY (driver_id)</text>
+
+          <!-- Foreign Key -->
+          <rect x="520" y="10" width="230" height="105" rx="10" fill="#FEF5EC" stroke="#E67E22" stroke-width="1.5"/>
+          <text x="635" y="35" text-anchor="middle" fill="#E67E22" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">FOREIGN KEY</text>
+          <text x="635" y="55" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">"Links to another table's PK."</text>
+          <text x="635" y="80" text-anchor="middle" fill="#4A1A52" font-size="10" font-family="Source Code Pro, monospace">FOREIGN KEY (driver_id)</text>
+          <text x="635" y="95" text-anchor="middle" fill="#4A1A52" font-size="10" font-family="Source Code Pro, monospace">REFERENCES Driver(driver_id)</text>
+
+          <!-- CHECK -->
+          <rect x="80" y="140" width="280" height="105" rx="10" fill="#FEF9E7" stroke="#F1C40F" stroke-width="1.5"/>
+          <text x="220" y="165" text-anchor="middle" fill="#7D6608" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">CHECK</text>
+          <text x="220" y="185" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">"Values must pass this test."</text>
+          <text x="220" y="210" text-anchor="middle" fill="#4A1A52" font-size="10" font-family="Source Code Pro, monospace">CHECK(points >= 0 AND points &lt; 12)</text>
+          <text x="220" y="235" text-anchor="middle" fill="#5D6D7E" font-size="10" font-family="Source Sans 3, sans-serif">Enforces domain integrity</text>
+
+          <!-- Labels -->
+          <rect x="400" y="140" width="280" height="105" rx="10" fill="#FDEDEC" stroke="#E74C3C" stroke-width="1.5"/>
+          <text x="540" y="165" text-anchor="middle" fill="#E74C3C" font-weight="700" font-size="13" font-family="Source Sans 3, sans-serif">CASCADE Options</text>
+          <text x="540" y="185" text-anchor="middle" fill="#5D6D7E" font-size="11" font-family="Source Sans 3, sans-serif">"What happens when linked data changes?"</text>
+          <text x="540" y="210" text-anchor="middle" fill="#4A1A52" font-size="10" font-family="Source Code Pro, monospace">ON DELETE CASCADE</text>
+          <text x="540" y="230" text-anchor="middle" fill="#4A1A52" font-size="10" font-family="Source Code Pro, monospace">ON UPDATE CASCADE</text>
+        </svg>
+        <div class="visual-caption">Figure 2: The main types of SQL constraints and what they do.</div>
+      </div>
+
+      <p>Here is a fuller example showing all of these in action. This creates a Deliver table with a primary key, two foreign keys, NOT NULL requirements, and CASCADE rules.</p>
+
+      <pre><span class="kw">CREATE TABLE</span> Deliver (
+    delivery_id   <span class="fn">NCHAR</span>(7)      <span class="kw">NOT NULL</span>,
+    driver_id     <span class="fn">NCHAR</span>(4)      <span class="kw">NOT NULL</span>,
+    customer_id   <span class="fn">NCHAR</span>(6)      <span class="kw">NOT NULL</span>,
+    vehicle       <span class="fn">NCHAR</span>(10),
+    del_address   <span class="fn">NVARCHAR</span>(30)  <span class="kw">NOT NULL</span>,
+    charge        <span class="fn">MONEY</span>,
+
+    <span class="kw">CONSTRAINT</span> pk_Deliver <span class="kw">PRIMARY KEY</span> (delivery_id),
+
+    <span class="kw">CONSTRAINT</span> fk_Deliver_Driver
+        <span class="kw">FOREIGN KEY</span> (driver_id) <span class="kw">REFERENCES</span> Driver(driver_id)
+        <span class="kw">ON DELETE CASCADE ON UPDATE CASCADE</span>,
+
+    <span class="kw">CONSTRAINT</span> fk_Deliver_Customer
+        <span class="kw">FOREIGN KEY</span> (customer_id) <span class="kw">REFERENCES</span> Customer(customer_id)
+        <span class="kw">ON DELETE CASCADE ON UPDATE CASCADE</span>
+);</pre>
+
+      <p>The <code>ON DELETE CASCADE</code> part means: if a driver is deleted from the Driver table, automatically delete all their deliveries too. Without this, you would end up with delivery records pointing to a driver that no longer exists.</p>
+
+      <p><span class="key-term">CHECK constraints</span> let you set rules about what values are allowed in a column. For instance, you can say that a driver's points must be between 0 and 12, or that the title must be one of a specific set of values.</p>
+
+      <pre><span class="kw">CREATE TABLE</span> Driver (
+    driver_id   <span class="fn">NCHAR</span>(4)       <span class="kw">NOT NULL</span>,
+    firstname   <span class="fn">NVARCHAR</span>(30)   <span class="kw">NOT NULL</span>,
+    lastname    <span class="fn">NVARCHAR</span>(30)   <span class="kw">NOT NULL</span>,
+    points      <span class="fn">INT</span>            <span class="kw">NOT NULL</span>,
+
+    <span class="kw">CONSTRAINT</span> pk_Driver <span class="kw">PRIMARY KEY</span> (driver_id),
+    <span class="kw">CONSTRAINT</span> ck_driverid <span class="kw">CHECK</span>(driver_id <span class="kw">LIKE</span> <span class="str">'D[0-9][0-9][0-9]'</span>),
+    <span class="kw">CONSTRAINT</span> ck_points <span class="kw">CHECK</span>(points >= <span class="num">0</span> <span class="kw">AND</span> points &lt; <span class="num">12</span>)
+);</pre>
+
+      <div class="warning">
+        <strong>Watch out:</strong> Constraints have names (like <code>pk_Driver</code> or <code>ck_points</code>). These names must be unique within the database. Giving them clear, descriptive names makes it much easier to manage them later, for example when you need to drop or modify a specific constraint.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 4: ALTER and DROP -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s4">
+    <div class="concept-header">
+      <div class="concept-num">4</div>
+      <h2>Altering and Dropping Tables</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>Once a table exists, you might need to change its structure. Perhaps you realise you need an extra column, or you want to add a constraint you forgot. The <code>ALTER TABLE</code> statement handles this.</p>
+
+      <p>The most common use is adding a new column to an existing table.</p>
+
+      <pre><span class="kw">ALTER TABLE</span> Payslip
+<span class="kw">ADD</span> ni_num <span class="fn">VARCHAR</span>(10);</pre>
+
+      <p>This adds a new column called <code>ni_num</code> to the Payslip table. Any existing rows will have <code>NULL</code> in this new column until you fill them in.</p>
+
+      <p>You can also use <code>ALTER TABLE</code> to add, switch off, or remove constraints after the table has been created.</p>
+
+      <pre><span class="cm">-- Add a constraint to an existing table</span>
+<span class="kw">ALTER TABLE</span> Driver
+<span class="kw">ADD CONSTRAINT</span> CK_points <span class="kw">CHECK</span>(points >= <span class="num">0</span> <span class="kw">AND</span> points &lt; <span class="num">20</span>);
+
+<span class="cm">-- Temporarily switch off a constraint</span>
+<span class="kw">ALTER TABLE</span> Driver <span class="kw">NOCHECK CONSTRAINT</span> CK_points;
+
+<span class="cm">-- Permanently remove a constraint</span>
+<span class="kw">ALTER TABLE</span> Driver <span class="kw">DROP CONSTRAINT</span> CK_points;</pre>
+
+      <p>To remove an entire table from the database, you use <code>DROP TABLE</code>.</p>
+
+      <pre><span class="cm">-- Remove a single table</span>
+<span class="kw">DROP TABLE</span> Payslip;
+
+<span class="cm">-- Remove a table and anything that depends on it</span>
+<span class="kw">DROP TABLE</span> Driver <span class="kw">CASCADE</span>;</pre>
+
+      <div class="danger">
+        <strong>Critical: DROP vs DELETE.</strong> These two commands do very different things. <code>DROP TABLE</code> destroys the entire table, its structure, its data, its constraints, everything. It is gone. <code>DELETE</code> (covered later) removes rows of data from a table but the table itself stays in place, ready to receive new data. If you just want to empty a table, use <code>DELETE</code>. If you want to remove the table from the database entirely, use <code>DROP TABLE</code>.
+      </div>
+
+      <div class="grid-2">
+        <div class="mini-card highlight-red">
+          <h4>DROP TABLE Driver;</h4>
+          <p>Destroys the Driver table completely. Structure, data, constraints, all gone.</p>
+        </div>
+        <div class="mini-card highlight-blue">
+          <h4>DELETE FROM Driver;</h4>
+          <p>Removes all the rows from Driver, but the table structure stays. You can insert new rows later.</p>
+        </div>
+      </div>
+
+      <div class="warning">
+        <strong>Watch out:</strong> If another table has a foreign key pointing to the table you want to drop, you must use <code>CASCADE</code>. Otherwise the database will refuse, because dropping the table would leave orphaned foreign key references.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 5: INSERT -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s5">
+    <div class="concept-header">
+      <div class="concept-num">5</div>
+      <h2>Adding Data with INSERT</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>Once your table exists, you add data to it one row at a time using the <code>INSERT INTO</code> statement. There are two ways to do this.</p>
+
+      <p><strong>Method 1: Supply values for every column.</strong> If you are filling in all columns, you just list the values in the same order the columns were defined.</p>
+
+      <pre><span class="kw">INSERT INTO</span> Drivers
+<span class="kw">VALUES</span> (<span class="str">'D060'</span>, <span class="str">'Betty'</span>, <span class="str">'Inverness'</span>, <span class="num">6</span>);</pre>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Before label -->
+          <text x="185" y="20" text-anchor="middle" fill="#5D6D7E" font-weight="600" font-size="12" font-family="Source Sans 3, sans-serif">BEFORE INSERT</text>
+          <!-- Before table -->
+          <rect x="30" y="30" width="310" height="25" rx="4" fill="#682773"/>
+          <text x="70" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">driverid</text>
+          <text x="140" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">name</text>
+          <text x="220" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">address</text>
+          <text x="300" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">points</text>
+
+          <rect x="30" y="55" width="310" height="20" fill="#FAFBFC" stroke="#E8E8E8" stroke-width="0.5"/>
+          <text x="70" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D010</text>
+          <text x="140" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Fred</text>
+          <text x="220" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Perth</text>
+          <text x="300" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">7</text>
+
+          <rect x="30" y="75" width="310" height="20" fill="#F7ECF8" stroke="#E8E8E8" stroke-width="0.5"/>
+          <text x="70" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D020</text>
+          <text x="140" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Jimmy</text>
+          <text x="220" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Dundee</text>
+          <text x="300" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">4</text>
+
+          <rect x="30" y="95" width="310" height="20" fill="#FAFBFC" stroke="#E8E8E8" stroke-width="0.5"/>
+          <text x="70" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D050</text>
+          <text x="140" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Bobby</text>
+          <text x="220" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Aberdeen</text>
+          <text x="300" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">12</text>
+
+          <!-- Arrow -->
+          <text x="385" y="85" text-anchor="middle" fill="#27AE60" font-weight="700" font-size="22" font-family="Source Sans 3, sans-serif">&#8594;</text>
+
+          <!-- After label -->
+          <text x="575" y="20" text-anchor="middle" fill="#5D6D7E" font-weight="600" font-size="12" font-family="Source Sans 3, sans-serif">AFTER INSERT</text>
+          <!-- After table -->
+          <rect x="420" y="30" width="310" height="25" rx="4" fill="#682773"/>
+          <text x="460" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">driverid</text>
+          <text x="530" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">name</text>
+          <text x="610" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">address</text>
+          <text x="690" y="47" text-anchor="middle" fill="white" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">points</text>
+
+          <rect x="420" y="55" width="310" height="20" fill="#FAFBFC" stroke="#E8E8E8" stroke-width="0.5"/>
+          <text x="460" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D010</text>
+          <text x="530" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Fred</text>
+          <text x="610" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Perth</text>
+          <text x="690" y="69" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">7</text>
+
+          <rect x="420" y="75" width="310" height="20" fill="#F7ECF8" stroke="#E8E8E8" stroke-width="0.5"/>
+          <text x="460" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D020</text>
+          <text x="530" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Jimmy</text>
+          <text x="610" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Dundee</text>
+          <text x="690" y="89" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">4</text>
+
+          <rect x="420" y="95" width="310" height="20" fill="#FAFBFC" stroke="#E8E8E8" stroke-width="0.5"/>
+          <text x="460" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D050</text>
+          <text x="530" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Bobby</text>
+          <text x="610" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Aberdeen</text>
+          <text x="690" y="109" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">12</text>
+
+          <!-- New row highlighted -->
+          <rect x="420" y="115" width="310" height="22" fill="#EAFAF1" stroke="#27AE60" stroke-width="1.5" rx="2"/>
+          <text x="460" y="130" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">D060</text>
+          <text x="530" y="130" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">Betty</text>
+          <text x="610" y="130" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">Inverness</text>
+          <text x="690" y="130" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">6</text>
+
+          <text x="575" y="160" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">&#8593; New row added</text>
+        </svg>
+        <div class="visual-caption">Figure 3: INSERT adds a new row to the bottom of the table.</div>
+      </div>
+
+      <p><strong>Method 2: Supply values for only some columns.</strong> If you do not have values for every column, list the column names you are filling in. Any columns you leave out will be set to <code>NULL</code> (meaning "no value").</p>
+
+      <pre><span class="kw">INSERT INTO</span> Drivers (driverid, name)
+<span class="kw">VALUES</span> (<span class="str">'D070'</span>, <span class="str">'Jeannie'</span>);</pre>
+
+      <p>In this case, the address and points columns for Jeannie will both contain <code>NULL</code>.</p>
+
+      <div class="warning">
+        <strong>Watch out:</strong> If a column has a <code>NOT NULL</code> constraint, you cannot leave it out. The database will reject the insert because that column is required to have a value.
+      </div>
+
+      <p><strong>Method 3: INSERT with SELECT.</strong> You can also copy rows from one table into another by combining <code>INSERT INTO</code> with a <code>SELECT</code> query. The target table must already exist.</p>
+
+      <pre><span class="cm">-- Copy all Dundee drivers into an archive table</span>
+<span class="kw">INSERT INTO</span> Driver_Archive
+  <span class="kw">SELECT</span> *
+  <span class="kw">FROM</span> Drivers
+  <span class="kw">WHERE</span> address = <span class="str">'Dundee'</span>;</pre>
+
+      <p>This finds every driver with a Dundee address and copies their full row into the Driver_Archive table. You can also copy only specific columns, but any columns you do not fill will be set to <code>NULL</code> in the archive.</p>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 6: SELECT Basics -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s6">
+    <div class="concept-header">
+      <div class="concept-num">6</div>
+      <h2>Retrieving Data with SELECT</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>The <code>SELECT</code> statement is the most important command in SQL. It is how you ask questions of your database and get answers back. The result of a SELECT query is always a temporary table, which means you get back a set of rows and columns, but this result is not stored permanently.</p>
+
+      <p>An important thing to understand is that <code>SELECT</code> only reads data. It never changes the data in your tables. It is a safe, read-only operation.</p>
+
+      <p>The basic structure of a SELECT query has three parts.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- SELECT block -->
+          <rect x="30" y="20" width="200" height="60" rx="10" fill="#682773"/>
+          <text x="130" y="45" text-anchor="middle" fill="white" font-weight="700" font-size="14" font-family="Source Code Pro, monospace">SELECT columns</text>
+          <text x="130" y="65" text-anchor="middle" fill="#E8DFF0" font-size="11" font-family="Source Sans 3, sans-serif">What do you want to see?</text>
+
+          <!-- Arrow -->
+          <line x1="230" y1="50" x2="275" y2="50" stroke="#9B59B6" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+          <!-- FROM block -->
+          <rect x="280" y="20" width="200" height="60" rx="10" fill="#2980B9"/>
+          <text x="380" y="45" text-anchor="middle" fill="white" font-weight="700" font-size="14" font-family="Source Code Pro, monospace">FROM table</text>
+          <text x="380" y="65" text-anchor="middle" fill="#D4E6F1" font-size="11" font-family="Source Sans 3, sans-serif">Where is the data?</text>
+
+          <!-- Arrow -->
+          <line x1="480" y1="50" x2="525" y2="50" stroke="#9B59B6" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+          <!-- WHERE block -->
+          <rect x="530" y="20" width="200" height="60" rx="10" fill="#27AE60"/>
+          <text x="630" y="45" text-anchor="middle" fill="white" font-weight="700" font-size="14" font-family="Source Code Pro, monospace">WHERE condition</text>
+          <text x="630" y="65" text-anchor="middle" fill="#D5F5E3" font-size="11" font-family="Source Sans 3, sans-serif">Which rows do you want?</text>
+
+          <!-- Optional label -->
+          <text x="630" y="100" text-anchor="middle" fill="#E67E22" font-weight="600" font-size="11" font-family="Source Sans 3, sans-serif">(optional)</text>
+
+          <!-- Arrowhead definition -->
+          <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#9B59B6"/>
+            </marker>
+          </defs>
+
+          <!-- Summary line -->
+          <rect x="80" y="130" width="600" height="40" rx="8" fill="#F7ECF8" stroke="#682773" stroke-width="1"/>
+          <text x="380" y="155" text-anchor="middle" fill="#4A1A52" font-weight="600" font-size="13" font-family="Source Code Pro, monospace">SELECT columns FROM table WHERE condition;</text>
+        </svg>
+        <div class="visual-caption">Figure 4: The three-part structure of a SELECT query. The WHERE clause is optional.</div>
+      </div>
+
+      <p>Here are the three basic patterns you need to know.</p>
+
+      <p><strong>Select specific columns:</strong> List the column names you want, separated by commas.</p>
+
+      <pre><span class="kw">SELECT</span> driverid, points
+<span class="kw">FROM</span> Drivers;</pre>
+
+      <p>This gives you just those two columns for every row in the table.</p>
+
+      <p><strong>Select all columns:</strong> Use the <code>*</code> wildcard to get everything.</p>
+
+      <pre><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> Drivers;</pre>
+
+      <p><strong>Filter with WHERE:</strong> Add a condition to get only the rows that match.</p>
+
+      <pre><span class="kw">SELECT</span> driverid
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> address = <span class="str">'Dundee'</span>;</pre>
+
+      <p>This gives you only the driver IDs of drivers whose address is Dundee.</p>
+
+      <div class="visual-panel">
+        <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;">
+          <!-- Source table label -->
+          <text x="160" y="18" text-anchor="middle" fill="#5D6D7E" font-weight="600" font-size="12" font-family="Source Sans 3, sans-serif">Drivers (full table)</text>
+          <!-- Source table header -->
+          <rect x="20" y="25" width="280" height="22" rx="3" fill="#682773"/>
+          <text x="55" y="40" text-anchor="middle" fill="white" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">driverid</text>
+          <text x="115" y="40" text-anchor="middle" fill="white" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">name</text>
+          <text x="190" y="40" text-anchor="middle" fill="white" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">address</text>
+          <text x="265" y="40" text-anchor="middle" fill="white" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">points</text>
+          <!-- Rows -->
+          <rect x="20" y="47" width="280" height="18" fill="#FAFBFC"/>
+          <text x="55" y="60" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D010</text>
+          <text x="115" y="60" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Fred</text>
+          <text x="190" y="60" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Perth</text>
+          <text x="265" y="60" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">7</text>
+
+          <rect x="20" y="65" width="280" height="18" fill="#EAFAF1" stroke="#27AE60" stroke-width="1"/>
+          <text x="55" y="78" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">D020</text>
+          <text x="115" y="78" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">Jimmy</text>
+          <text x="190" y="78" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">Dundee</text>
+          <text x="265" y="78" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">4</text>
+
+          <rect x="20" y="83" width="280" height="18" fill="#EAFAF1" stroke="#27AE60" stroke-width="1"/>
+          <text x="55" y="96" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">D030</text>
+          <text x="115" y="96" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">David</text>
+          <text x="190" y="96" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">Dundee</text>
+          <text x="265" y="96" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">2</text>
+
+          <rect x="20" y="101" width="280" height="18" fill="#FAFBFC"/>
+          <text x="55" y="114" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D040</text>
+          <text x="115" y="114" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">John</text>
+          <text x="190" y="114" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Stirling</text>
+          <text x="265" y="114" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">3</text>
+
+          <rect x="20" y="119" width="280" height="18" fill="#FAFBFC"/>
+          <text x="55" y="132" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">D050</text>
+          <text x="115" y="132" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Bobby</text>
+          <text x="190" y="132" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">Aberdeen</text>
+          <text x="265" y="132" text-anchor="middle" fill="#2C3E50" font-size="10" font-family="Source Code Pro, monospace">12</text>
+
+          <!-- Filter arrow -->
+          <text x="380" y="60" text-anchor="middle" fill="#682773" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">SELECT driverid</text>
+          <text x="380" y="78" text-anchor="middle" fill="#682773" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">FROM Drivers</text>
+          <text x="380" y="96" text-anchor="middle" fill="#682773" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">WHERE address</text>
+          <text x="380" y="114" text-anchor="middle" fill="#682773" font-weight="600" font-size="11" font-family="Source Code Pro, monospace">= 'Dundee';</text>
+
+          <line x1="440" y1="125" x2="490" y2="165" stroke="#27AE60" stroke-width="2" marker-end="url(#arrowG)"/>
+          <defs>
+            <marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#27AE60"/>
+            </marker>
+          </defs>
+
+          <!-- Result table -->
+          <text x="570" y="158" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="12" font-family="Source Sans 3, sans-serif">Result</text>
+          <rect x="500" y="165" width="100" height="22" rx="3" fill="#682773"/>
+          <text x="550" y="180" text-anchor="middle" fill="white" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">driverid</text>
+          <rect x="500" y="187" width="100" height="18" fill="#EAFAF1" stroke="#27AE60" stroke-width="1"/>
+          <text x="550" y="200" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">D020</text>
+          <rect x="500" y="205" width="100" height="18" fill="#EAFAF1" stroke="#27AE60" stroke-width="1"/>
+          <text x="550" y="218" text-anchor="middle" fill="#27AE60" font-weight="600" font-size="10" font-family="Source Code Pro, monospace">D030</text>
+        </svg>
+        <div class="visual-caption">Figure 5: A SELECT with WHERE filters rows (green) and picks only the requested columns.</div>
+      </div>
+
+      <div class="info">
+        <strong>Good to know:</strong> Text values in SQL must always be wrapped in single quotes, like <code>'Dundee'</code>. Numbers do not need quotes. Getting this wrong is a very common source of errors.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 7: Extending SELECT -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s7">
+    <div class="concept-header">
+      <div class="concept-num">7</div>
+      <h2>Extending SELECT: LIKE, IN, ORDER BY, and Complex Conditions</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>The basic <code>SELECT ... FROM ... WHERE</code> pattern is powerful, but SQL gives you several extra tools to make your queries more precise. This section covers the most important ones.</p>
+
+      <p><strong>LIKE: Pattern matching.</strong> Sometimes you do not know the exact value you are looking for, but you know what it starts with, ends with, or contains. The <code>LIKE</code> clause lets you use the <code>%</code> symbol as a wildcard, meaning "any characters here."</p>
+
+      <pre><span class="cm">-- Find drivers whose address starts with 'Du'</span>
+<span class="kw">SELECT</span> name, address
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> address <span class="kw">LIKE</span> <span class="str">'Du%'</span>;</pre>
+
+      <p>This matches "Dundee", "Dublin", "Dumfries", or any address starting with "Du". The <code>%</code> stands in for anything that follows.</p>
+
+      <div class="grid-3">
+        <div class="mini-card highlight-blue">
+          <h4>'Du%'</h4>
+          <p>Starts with "Du", then anything. Matches Dundee, Dublin.</p>
+        </div>
+        <div class="mini-card highlight-orange">
+          <h4>'%ee'</h4>
+          <p>Ends with "ee". Would match Dundee, but not Dublin.</p>
+        </div>
+        <div class="mini-card highlight-green">
+          <h4>'%und%'</h4>
+          <p>Contains "und" anywhere. Matches Dundee.</p>
+        </div>
+      </div>
+
+      <p><strong>IN: Checking a list of values.</strong> If you want to match against several specific values, the <code>IN</code> operator is cleaner than writing lots of <code>OR</code> conditions.</p>
+
+      <pre><span class="cm">-- Drivers from Dundee or Aberdeen</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> address <span class="kw">IN</span> (<span class="str">'Dundee'</span>, <span class="str">'Aberdeen'</span>);
+
+<span class="cm">-- Drivers NOT from Dundee or Aberdeen</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> address <span class="kw">NOT IN</span> (<span class="str">'Dundee'</span>, <span class="str">'Aberdeen'</span>);</pre>
+
+      <p><strong>ORDER BY: Sorting results.</strong> By default, SQL does not guarantee any particular order for your results. If you want them sorted, you must say so. The default sort is ascending (A to Z, or smallest to largest). Add <code>DESC</code> to reverse it.</p>
+
+      <pre><span class="cm">-- Alphabetical order (ascending is the default)</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> address <span class="kw">IN</span> (<span class="str">'Dundee'</span>, <span class="str">'Aberdeen'</span>)
+<span class="kw">ORDER BY</span> name;
+
+<span class="cm">-- Reverse alphabetical order</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> address <span class="kw">IN</span> (<span class="str">'Dundee'</span>, <span class="str">'Aberdeen'</span>)
+<span class="kw">ORDER BY</span> name <span class="kw">DESC</span>;</pre>
+
+      <p><strong>Combining conditions with AND and OR.</strong> You can build complex filters by joining conditions together. <code>AND</code> means both conditions must be true. <code>OR</code> means at least one must be true. You can also use comparison operators like <code>&gt;=</code>, <code>&lt;=</code>, and <code>&lt;&gt;</code> (which means "not equal to").</p>
+
+      <pre><span class="cm">-- Points between 4 and 15, and NOT from Dundee</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> points >= <span class="num">4</span>
+  <span class="kw">AND</span> points &lt;= <span class="num">15</span>
+  <span class="kw">AND</span> (address &lt;> <span class="str">'Dundee'</span>);</pre>
+
+      <pre><span class="cm">-- Address starts with 'D' OR starts with 'A'</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> Drivers
+<span class="kw">WHERE</span> (address <span class="kw">LIKE</span> <span class="str">'D%'</span>)
+   <span class="kw">OR</span> (address <span class="kw">LIKE</span> <span class="str">'A%'</span>);</pre>
+
+      <div class="warning">
+        <strong>Watch out:</strong> When mixing AND and OR in the same query, use brackets to make the grouping clear. Without brackets, the database applies AND before OR, which can give you unexpected results. If in doubt, add brackets.
+      </div>
+
+      <table>
+        <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td><code>=</code></td><td>Equal to</td><td><code>address = 'Dundee'</code></td></tr>
+        <tr><td><code>&lt;&gt;</code></td><td>Not equal to</td><td><code>address &lt;&gt; 'Dundee'</code></td></tr>
+        <tr><td><code>&lt;</code></td><td>Less than</td><td><code>points &lt; 10</code></td></tr>
+        <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>points &gt; 5</code></td></tr>
+        <tr><td><code>&lt;=</code></td><td>Less than or equal to</td><td><code>points &lt;= 12</code></td></tr>
+        <tr><td><code>&gt;=</code></td><td>Greater than or equal to</td><td><code>points &gt;= 4</code></td></tr>
+        <tr><td><code>LIKE</code></td><td>Pattern match (with <code>%</code> wildcard)</td><td><code>address LIKE 'D%'</code></td></tr>
+        <tr><td><code>IN</code></td><td>Value is in a list</td><td><code>address IN ('Perth', 'Dundee')</code></td></tr>
+        <tr><td><code>NOT IN</code></td><td>Value is not in a list</td><td><code>address NOT IN ('Perth')</code></td></tr>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 8: Aggregate Functions -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s8">
+    <div class="concept-header">
+      <div class="concept-num">8</div>
+      <h2>Aggregate Functions and Calculated Columns</h2>
+    </div>
+    <div class="concept-body">
+
+      <p>So far, every query has returned individual rows from the table. But sometimes you want a summary, for example "how many drivers are there?" or "what is the average number of points?" SQL provides five built-in <span class="key-term">aggregate functions</span> (also called column functions) for exactly this.</p>
+
+      <table>
+        <tr><th>Function</th><th>What It Does</th><th>Example</th></tr>
+        <tr><td><code>COUNT(column)</code></td><td>Counts the number of values in a column.</td><td><code>COUNT(driverid)</code> returns <code>5</code></td></tr>
+        <tr><td><code>SUM(column)</code></td><td>Adds up all the values in a column.</td><td><code>SUM(points)</code> returns <code>28</code></td></tr>
+        <tr><td><code>AVG(column)</code></td><td>Calculates the average of all values.</td><td><code>AVG(points)</code> returns <code>5.6</code></td></tr>
+        <tr><td><code>MAX(column)</code></td><td>Finds the largest value.</td><td><code>MAX(points)</code> returns <code>12</code></td></tr>
+        <tr><td><code>MIN(column)</code></td><td>Finds the smallest value.</td><td><code>MIN(points)</code> returns <code>2</code></td></tr>
+      </table>
+
+      <p>You can use several aggregate functions in a single query, and you can even do arithmetic with them.</p>
+
+      <pre><span class="kw">SELECT</span> <span class="fn">COUNT</span>(driverid), <span class="fn">SUM</span>(points), <span class="fn">AVG</span>(points),
+       <span class="fn">MAX</span>(points), <span class="fn">MIN</span>(points),
+       <span class="fn">MAX</span>(points) - <span class="fn">MIN</span>(points)
+<span class="kw">FROM</span> Drivers;</pre>
+
+      <p>This returns a single row with six values: the count (5), the total (28), the average (5.6), the maximum (12), the minimum (2), and the range (10).</p>
+
+      <div class="info">
+        <strong>Good to know:</strong> When you use aggregate functions, the result is always a single summary row, not a row per driver. The database crunches all the rows together into one answer. You will learn about <code>GROUP BY</code> later, which lets you get summaries per group (for example, average points per city).
+      </div>
+
+      <p><strong>Calculated columns with AS.</strong> You can also do maths within a SELECT and give the result a name using the <code>AS</code> keyword. This does not change any data in the table. It just creates a temporary extra column in your results.</p>
+
+      <pre><span class="kw">SELECT</span> item, qty * price <span class="kw">AS</span> TotalCost
+<span class="kw">FROM</span> Items_ordered;</pre>
+
+      <p>This multiplies the quantity by the price for each row and shows it in a column called "TotalCost". The available mathematical operators are <code>+</code> (add), <code>-</code> (subtract), <code>*</code> (multiply), <code>/</code> (divide), and <code>%</code> (modulo, which gives the remainder after division).</p>
+
+      <div class="example">
+        <strong>Example:</strong> Using the Items_ordered table, if Shoes have a quantity of 2 and a price of 20, the TotalCost column would show 40. The original qty and price columns are unchanged.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SECTION 9: Practice Exercises -->
+  <!-- ============================================================== -->
+  <div class="concept" id="s9">
+    <div class="concept-header">
+      <div class="concept-num">9</div>
+      <h2>Check Your Understanding</h2>
+    </div>
+    <div class="concept-body">
+      <p>Test what you have taken in with these quick exercises. Click on an answer to check if you are correct. If you get one wrong, the correct answer will highlight in green and an explanation will appear.</p>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 1: DDL or DML?</h3>
+
+      <div class="quiz-question">
+        <h4>You want to add a new column called "email" to the Student table. Which category of SQL does this belong to?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">DDL (Data Definition Language)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">DML (Data Manipulation Language)</div>
+        </div>
+        <div class="quiz-reveal">Adding a column changes the <em>structure</em> of a table, so this is DDL. You would use <code>ALTER TABLE Student ADD email NVARCHAR(50);</code></div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>You want to find out which students live in Aberdeen. Which category is this?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">DDL (Data Definition Language)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">DML (Data Manipulation Language)</div>
+        </div>
+        <div class="quiz-reveal">Retrieving data is working with the <em>data itself</em>, not the table structure, so this is DML. You would use a <code>SELECT</code> query with a <code>WHERE</code> clause.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>You want to remove the Payslip table from the database entirely. Which category is this?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">DDL (Data Definition Language)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">DML (Data Manipulation Language)</div>
+        </div>
+        <div class="quiz-reveal">Removing a table destroys its <em>structure</em>, so this is DDL. You would use <code>DROP TABLE Payslip;</code></div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 2: Choosing the Right Data Type</h3>
+
+      <div class="quiz-question">
+        <h4>You need a column to store a driver's licence number, which is always exactly 16 characters. Which data type is best?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">NCHAR(16)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">NVARCHAR(16)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">INT</div>
+        </div>
+        <div class="quiz-reveal">Because the value is always <em>exactly</em> 16 characters, <code>NCHAR(16)</code> is the right choice. <code>NVARCHAR</code> is for values that vary in length. <code>INT</code> is for whole numbers, not text.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>You need a column to store people's home addresses, which vary in length. Which data type is best?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">NCHAR(50)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">NVARCHAR(50)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">DATETIME</div>
+        </div>
+        <div class="quiz-reveal">Addresses vary in length (some are short, some are long), so <code>NVARCHAR(50)</code> is the right choice. <code>NCHAR(50)</code> would waste space by padding every address to exactly 50 characters.</div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 3: DROP vs DELETE</h3>
+
+      <div class="quiz-question">
+        <h4>You want to remove all the rows from the Orders table, but keep the table itself so you can add new orders next month. What should you use?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">DROP TABLE Orders;</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">DELETE FROM Orders;</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">ALTER TABLE Orders;</div>
+        </div>
+        <div class="quiz-reveal"><code>DELETE</code> removes the data (rows) but keeps the table structure intact so you can use it again. <code>DROP TABLE</code> would destroy the entire table, and you would have to recreate it from scratch.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>A table called "TempData" is no longer needed at all. You want to remove it and everything about it from the database. What should you use?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, true)">DROP TABLE TempData;</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">DELETE FROM TempData;</div>
+        </div>
+        <div class="quiz-reveal"><code>DROP TABLE</code> removes the table entirely, including its structure, constraints, and data. Since you do not need the table at all any more, this is the right choice.</div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 4: Reading SELECT Queries</h3>
+
+      <div class="quiz-question">
+        <h4>What does this query return?<br><br><code>SELECT name FROM Drivers WHERE address LIKE 'A%';</code></h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">All columns for drivers whose name starts with 'A'</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Just the name column for drivers whose address starts with 'A'</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">All drivers, sorted alphabetically by address</div>
+        </div>
+        <div class="quiz-reveal">The <code>SELECT name</code> part means we only get the name column back. The <code>WHERE address LIKE 'A%'</code> filters to rows where the address starts with the letter 'A'. So the result is the names of drivers whose address begins with 'A' (for example, Aberdeen).</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>What does this query return?<br><br><code>SELECT * FROM Drivers WHERE points >= 5 ORDER BY points DESC;</code></h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">All drivers sorted by points from lowest to highest</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Only the points column for drivers with 5 or more points</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">All columns for drivers with 5 or more points, sorted from highest to lowest points</div>
+        </div>
+        <div class="quiz-reveal">The <code>*</code> means all columns. The <code>WHERE points >= 5</code> filters to only drivers with 5 or more points. The <code>ORDER BY points DESC</code> sorts the results in descending order, so the highest points appear first.</div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 5: Writing the Right Query</h3>
+
+      <div class="quiz-question">
+        <h4>You want to find out how many drivers are in the Drivers table. Which query would you use?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">SELECT * FROM Drivers;</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">SELECT COUNT(driverid) FROM Drivers;</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">SELECT SUM(driverid) FROM Drivers;</div>
+        </div>
+        <div class="quiz-reveal"><code>COUNT</code> counts the number of values in a column, which gives you the number of drivers. <code>SELECT *</code> would show you all the data but would not give you a count. <code>SUM</code> adds up numeric values, and driver IDs are text, so that would not work.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>You want to list the names of drivers who are NOT from Perth or Stirling. Which WHERE clause is correct?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">WHERE address IN ('Perth', 'Stirling')</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">WHERE address NOT IN ('Perth', 'Stirling')</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">WHERE address LIKE 'Perth' OR address LIKE 'Stirling'</div>
+        </div>
+        <div class="quiz-reveal"><code>NOT IN</code> excludes the listed values. The first option (<code>IN</code>) would do the opposite, returning only Perth and Stirling drivers. The third option uses <code>LIKE</code> without a wildcard, so it would find matches rather than exclude them.</div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--purple);">Exercise 6: Constraints</h3>
+
+      <div class="quiz-question">
+        <h4>You want to make sure the "age" column in a Patient table only accepts values between 0 and 150. Which type of constraint would you use?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">PRIMARY KEY</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">FOREIGN KEY</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">CHECK</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">NOT NULL</div>
+        </div>
+        <div class="quiz-reveal">A <code>CHECK</code> constraint validates that values fall within a specific range or match a specific pattern. You would write something like <code>CHECK(age >= 0 AND age <= 150)</code>. <code>PRIMARY KEY</code> is for unique row identifiers, <code>FOREIGN KEY</code> is for linking tables, and <code>NOT NULL</code> just ensures a value is present.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>A Delivery table has a driver_id column that must match an existing driver in the Driver table. Which constraint enforces this?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">PRIMARY KEY</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">FOREIGN KEY</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">CHECK</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">NOT NULL</div>
+        </div>
+        <div class="quiz-reveal">A <code>FOREIGN KEY</code> constraint links a column in one table to the primary key of another table. It ensures that every driver_id in the Delivery table actually exists in the Driver table. This is referential integrity in action.</div>
+      </div>
+
+      <div class="quiz-question">
+        <h4>You try to insert a row into Drivers but leave the "name" column empty. The database rejects it. Which constraint most likely caused this?</h4>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">CHECK</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">FOREIGN KEY</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">NOT NULL</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">PRIMARY KEY</div>
+        </div>
+        <div class="quiz-reveal">A <code>NOT NULL</code> constraint means the column must have a value. If you try to insert a row without providing a value for a NOT NULL column, the database will reject it.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <div class="concept">
+    <div class="concept-header">
+      <div class="concept-num" style="background:var(--yellow);color:#7D6608;">&#10003;</div>
+      <h2>Quick Reference Summary</h2>
+    </div>
+    <div class="concept-body">
+      <table>
+        <tr><th>Command</th><th>What It Does</th><th>Category</th></tr>
+        <tr><td><code>CREATE TABLE</code></td><td>Makes a new table with columns and data types</td><td>DDL</td></tr>
+        <tr><td><code>CONSTRAINT</code></td><td>Adds rules like PRIMARY KEY, FOREIGN KEY, CHECK, NOT NULL</td><td>DDL</td></tr>
+        <tr><td><code>ALTER TABLE</code></td><td>Changes an existing table (add columns, add/drop constraints)</td><td>DDL</td></tr>
+        <tr><td><code>DROP TABLE</code></td><td>Destroys an entire table and its data</td><td>DDL</td></tr>
+        <tr><td><code>INSERT INTO</code></td><td>Adds new rows of data to a table</td><td>DML</td></tr>
+        <tr><td><code>SELECT ... FROM</code></td><td>Retrieves data from a table (read only)</td><td>DML</td></tr>
+        <tr><td><code>WHERE</code></td><td>Filters SELECT results to only matching rows</td><td>DML</td></tr>
+        <tr><td><code>LIKE</code></td><td>Pattern matching with <code>%</code> wildcard</td><td>DML</td></tr>
+        <tr><td><code>IN / NOT IN</code></td><td>Checks if a value is in a list of options</td><td>DML</td></tr>
+        <tr><td><code>ORDER BY</code></td><td>Sorts results (ASC for ascending, DESC for descending)</td><td>DML</td></tr>
+        <tr><td><code>AND / OR</code></td><td>Combines multiple conditions in a WHERE clause</td><td>DML</td></tr>
+        <tr><td><code>COUNT, SUM, AVG, MAX, MIN</code></td><td>Aggregate functions that summarise column values</td><td>DML</td></tr>
+        <tr><td><code>AS</code></td><td>Gives a temporary name to a calculated column</td><td>DML</td></tr>
+      </table>
+    
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  CM1120 Database Systems, Robert Gordon University.
+</footer>
+
+<script>
+function checkAnswer(element, isCorrect) {
+  var options = element.parentElement.querySelectorAll('.quiz-option');
+  options.forEach(function(opt) {
+    opt.classList.remove('correct', 'incorrect');
+  });
+
+  if (isCorrect) {
+    element.classList.add('correct');
+  } else {
+    element.classList.add('incorrect');
+    options.forEach(function(opt) {
+      if (opt.getAttribute('onclick').includes('true')) {
+        opt.classList.add('correct');
+      }
+    });
+  }
+
+  var reveal = element.parentElement.nextElementSibling;
+  reveal.classList.add('show');
+}
+</script>
+
+</body>
+</html>
